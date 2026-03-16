@@ -1341,6 +1341,7 @@
         '<div class="preview-card-shell">' + backHtml + '</div>' +
       '</div>';
     status.textContent = (draft.name || 'Nome do Produto') + ' • Quantidade ' + draft.qty;
+    fitBackCards(preview);
   }
 
   function generatePreview() {
@@ -1437,6 +1438,61 @@
       '</div></div>';
   }
 
+  function fitBackCards(root) {
+    root = root || document;
+    root.querySelectorAll('.card-back').forEach(function(card) {
+      var content = card.querySelector('.card-content');
+      var title = card.querySelector('.uso-title');
+      var text = card.querySelector('.uso-text');
+      if (!content || !title || !text) return;
+
+      // Temporarily switch to block layout so scrollHeight is accurate
+      content.style.display = 'block';
+      content.style.overflow = 'hidden';
+
+      var available = content.clientHeight;
+
+      var titleSize = 30;
+      var textSize = 16;
+      var minTitle = 14;
+      var minText = 7;
+
+      function apply() {
+        title.style.fontSize = titleSize + 'px';
+        text.style.fontSize = textSize + 'px';
+        text.style.lineHeight = '1.4';
+      }
+
+      function totalH() {
+        apply();
+        return title.offsetHeight + 6 + text.offsetHeight;
+      }
+
+      // Shrink until content fits
+      while (totalH() > available && (titleSize > minTitle || textSize > minText)) {
+        if (textSize > minText) textSize -= 0.5;
+        if (titleSize > minTitle) titleSize -= 0.5;
+      }
+
+      // Grow text if there's room
+      while (textSize < 20) {
+        textSize += 0.5;
+        if (totalH() > available) { textSize -= 0.5; apply(); break; }
+      }
+      // Grow title if there's room
+      while (titleSize < 36) {
+        titleSize += 0.5;
+        if (totalH() > available) { titleSize -= 0.5; apply(); break; }
+      }
+
+      apply();
+
+      // Restore flex layout for centering
+      content.style.display = '';
+      content.style.overflow = '';
+    });
+  }
+
   function printCards() {
     if (!cardBatch.length) {
       alert('Adicione ao menos um produto ao lote antes de imprimir.');
@@ -1491,6 +1547,7 @@
       printArea.appendChild(backPage);
     }
 
+    fitBackCards(printArea);
     setTimeout(() => window.print(), 300);
   }
 
