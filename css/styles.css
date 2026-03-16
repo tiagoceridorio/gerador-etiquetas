@@ -123,6 +123,17 @@ textarea {
 
 .btn-save:hover { background: linear-gradient(180deg, #855d3c 0%, #6f4b2f 100%); }
 
+.btn-cancel-edit {
+  width: 100%;
+  justify-content: center;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line-strong);
+  margin-top: 6px;
+}
+
+.btn-cancel-edit:hover { color: var(--foreground); border-color: var(--accent); }
+
 .btn-inline {
   background: transparent;
   border: none;
@@ -376,6 +387,11 @@ textarea {
   border-radius: 12px;
   background: #fffdf9;
   padding: 12px;
+}
+
+.product-item-editing {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(145, 103, 68, 0.18);
 }
 
 .product-item-header {
