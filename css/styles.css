@@ -765,6 +765,12 @@ textarea {
   margin: 1px 0;
 }
 
+.card-front .product-desc .amp {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
 .card-front .desc-lines {
   width: 60%;
   margin: 6px auto 4px;
@@ -914,6 +920,12 @@ textarea {
   text-shadow: 0 1px 4px rgba(0,0,0,0.45);
   position: relative;
   z-index: 2;
+}
+
+.banner-overlay .product-desc .amp {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
 }
 
 .banner-overlay .illustration-area {

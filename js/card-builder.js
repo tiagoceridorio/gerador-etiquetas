@@ -34,6 +34,10 @@ function descLines(count) {
   return html + '</div>';
 }
 
+function styledDesc(text) {
+  return esc(text).replace(/&amp;/g, '<span class="amp">&amp;</span>');
+}
+
 function illustration(card, options) {
   if (card.imageDataURL) return '<img src="' + card.imageDataURL + '" alt="ilustracao">';
   if (card.emoji) return '<span class="emoji-illust">' + esc(card.emoji) + '</span>';
@@ -82,7 +86,7 @@ function buildFront(card, options) {
       html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
         typeName(card) +
         ruledLines(1) +
-        '<div class="product-desc">' + esc(card.desc) + '</div>' +
+        '<div class="product-desc">' + styledDesc(card.desc) + '</div>' +
         '</div>';
 
       var contentTop = bt + bh;
@@ -97,7 +101,7 @@ function buildFront(card, options) {
       html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
         typeName(card) +
         ruledLines(1) +
-        '<div class="product-desc">' + esc(card.desc) + '</div>' +
+        '<div class="product-desc">' + styledDesc(card.desc) + '</div>' +
         '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
         '<div class="dates">' +
           '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
@@ -109,7 +113,7 @@ function buildFront(card, options) {
     html += '<div class="card-content">' +
       typeName(card) +
       ruledLines(1) +
-      '<div class="product-desc">' + esc(card.desc) + '</div>' +
+      '<div class="product-desc">' + styledDesc(card.desc) + '</div>' +
       descLines(1) +
       '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
       '</div>';
