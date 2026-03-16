@@ -138,18 +138,6 @@
             </div>
           </section>
 
-          <section class="sidebar-section">
-            <div class="section-label">
-              <span id="productCountLabel">Produtos</span>
-              <span class="counter-badge" id="productCountBadge">0</span>
-            </div>
-
-            <div class="product-list" id="addedCards"></div>
-
-            <div class="sidebar-footer">
-              <button class="btn-inline" type="button" onclick="clearAll()">Limpar lote</button>
-            </div>
-          </section>
         </div>
       </aside>
 
@@ -161,18 +149,33 @@
           <div class="preset-grid" id="presetGrid"></div>
         </section>
 
-        <div class="canvas-toolbar">
-          <div class="canvas-copy">
-            <strong>Pre-visualizacao ao vivo</strong>
-            <span id="previewStatus">Edite os campos e acompanhe o resultado imediatamente.</span>
+        <div class="canvas-body">
+          <div class="canvas-preview-col">
+            <div class="canvas-toolbar">
+              <div class="canvas-copy">
+                <strong>Pre-visualizacao ao vivo</strong>
+                <span id="previewStatus">Edite os campos e acompanhe o resultado imediatamente.</span>
+              </div>
+            </div>
+
+            <div class="canvas-stage">
+              <div class="single-preview" id="singlePreview"></div>
+            </div>
+
+            <p class="canvas-note">Pre-visualizacao ao vivo. Ao imprimir, frente e verso sao enviados em paginas separadas e o verso sai espelhado por linha para montagem correta.</p>
           </div>
-        </div>
 
-        <div class="canvas-stage">
-          <div class="single-preview" id="singlePreview"></div>
+          <aside class="batch-panel">
+            <div class="batch-panel-header">
+              <div class="section-label">
+                <span id="productCountLabel">Produtos</span>
+                <span class="counter-badge" id="productCountBadge">0</span>
+              </div>
+              <button class="btn-inline danger" type="button" onclick="clearAll()">Limpar lote</button>
+            </div>
+            <div class="product-list" id="addedCards"></div>
+          </aside>
         </div>
-
-        <p class="canvas-note">Pre-visualizacao ao vivo. Ao imprimir, frente e verso sao enviados em paginas separadas e o verso sai espelhado por linha para montagem correta.</p>
       </main>
     </div>
   </div>
