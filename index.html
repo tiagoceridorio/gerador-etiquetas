@@ -643,7 +643,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 26px 8px 0;
+      padding: 36px 8px 0;
       position: relative;
       z-index: 2;
       min-height: 0;
@@ -777,7 +777,7 @@
     /* Banner escuro */
     .banner-overlay {
       position: absolute;
-      top: 14px; left: 5px; right: 5px;
+      top: 24px; left: 5px; right: 5px;
       padding: 8px 10px 10px;
       z-index: 5;
       border-radius: 2px;
@@ -824,7 +824,7 @@
       align-items: center;
       justify-content: center;
       z-index: 2;
-      padding: 10px;
+      padding: 36px 10px 10px;
     }
 
     .card-back .uso-title {
@@ -1407,7 +1407,7 @@
         ruledLines(1) +
         '<div class="product-desc">' + esc(card.desc) + '</div>' +
         '</div>' +
-        '<div class="card-content" style="padding-top:85px;">' +
+        '<div class="card-content" style="padding-top:95px;">' +
         descLines(1) +
         '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
         '</div>';
@@ -1450,7 +1450,8 @@
       content.style.display = 'block';
       content.style.overflow = 'hidden';
 
-      var available = content.clientHeight;
+      var cs = window.getComputedStyle(content);
+      var available = content.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
 
       var titleSize = 30;
       var textSize = 16;
