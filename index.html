@@ -354,9 +354,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 18px 10px 0;
+      padding: 14px 10px 0;
       position: relative;
       z-index: 2;
+      min-height: 0;
     }
 
     .card-front .product-type-name {
@@ -414,7 +415,7 @@
       align-items: center;
       justify-content: center;
       padding: 2px 12px;
-      min-height: 70px;
+      min-height: 0;
       overflow: hidden;
     }
 
@@ -432,14 +433,17 @@
     /* Datas */
     .card-front .dates {
       width: 100%;
-      padding: 2px 14px 8px;
+      padding: 2px 14px 10px;
       position: relative;
       z-index: 2;
+      flex-shrink: 0;
+      text-align: center;
     }
 
     .card-front .date-row {
       display: flex;
       align-items: baseline;
+      justify-content: center;
       margin-bottom: 0px;
     }
 
@@ -885,8 +889,8 @@
     }
 
     html += '<div class="dates">' +
-      '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(c.fabricDate)) + '</span><span class="date-underline"></span></div>' +
-      '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(c.validDate)) + '</span><span class="date-underline"></span></div>' +
+      '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(c.fabricDate)) + '</span></div>' +
+      '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(c.validDate)) + '</span></div>' +
       '</div></div>';
 
     return html;
