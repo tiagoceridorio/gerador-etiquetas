@@ -1,5 +1,24 @@
 var cardBatch = [];
 
+function saveBatch() {
+  try {
+    localStorage.setItem('cardBatch', JSON.stringify(cardBatch));
+  } catch (e) {
+    console.warn('Não foi possível salvar no armazenamento local:', e);
+  }
+}
+
+function loadSavedBatch() {
+  try {
+    var saved = localStorage.getItem('cardBatch');
+    if (saved) {
+      cardBatch = JSON.parse(saved);
+    }
+  } catch (e) {
+    console.warn('Não foi possível carregar do armazenamento local:', e);
+  }
+}
+
 function addCard() {
   var card = getFormCardData(false);
   if (!card.name) {
@@ -8,6 +27,7 @@ function addCard() {
   }
 
   cardBatch.push(Object.assign({}, card));
+  saveBatch();
   renderBatch();
   renderDraftPreview();
   updatePrintButton();
@@ -19,12 +39,14 @@ function loadBatchCard(index) {
 
 function removeCard(index) {
   cardBatch.splice(index, 1);
+  saveBatch();
   renderBatch();
   updatePrintButton();
 }
 
 function clearAll() {
   cardBatch = [];
+  saveBatch();
   renderBatch();
   updatePrintButton();
 }

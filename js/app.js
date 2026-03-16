@@ -3,6 +3,7 @@ function init() {
   bindFormEvents();
   bindPreviewTabs();
   resetForm(false);
+  loadSavedBatch();
   renderBatch();
   renderDraftPreview();
   updatePrintButton();
