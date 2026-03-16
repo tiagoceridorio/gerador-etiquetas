@@ -1023,9 +1023,77 @@ textarea {
   }
 }
 
+/* ── Update Banner ── */
+
+.update-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #3c2814 0%, #5a3d24 100%);
+  color: #fff;
+  padding: 14px 20px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.update-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.update-banner-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.update-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.update-banner-text strong {
+  font-size: 0.95rem;
+}
+
+.update-banner-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.update-banner-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.update-banner-close:hover {
+  color: #fff;
+}
+
 @media print {
   body { background: #fff; margin: 0; padding: 0; }
   .app-shell { display: none !important; }
+  .update-banner { display: none !important; }
   .print-area { display: block !important; }
   .card-page { margin: 0; padding: 0; }
   @page { size: A4; margin: 0; }
