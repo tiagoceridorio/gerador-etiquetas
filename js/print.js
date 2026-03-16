@@ -33,15 +33,24 @@ function printCards() {
     backPage.className = 'card-page';
     backPage.style.position = 'relative';
 
+    var mirror = document.getElementById('mirrorBack').checked;
+
     for (var rowStart = 0; rowStart < perPage; rowStart += cols) {
       var row = slice.slice(rowStart, rowStart + cols);
       var empties = cols - row.length;
-      var reversedRow = row.slice().reverse();
+      var outputRow = mirror ? row.slice().reverse() : row;
 
-      for (var e = 0; e < empties; e++) {
-        backPage.innerHTML += '<div class="card-placeholder"></div>';
+      if (mirror) {
+        for (var e = 0; e < empties; e++) {
+          backPage.innerHTML += '<div class="card-placeholder"></div>';
+        }
       }
-      reversedRow.forEach(function(card) { backPage.innerHTML += buildBack(card); });
+      outputRow.forEach(function(card) { backPage.innerHTML += buildBack(card); });
+      if (!mirror) {
+        for (var e = 0; e < empties; e++) {
+          backPage.innerHTML += '<div class="card-placeholder"></div>';
+        }
+      }
     }
 
     var totalChildren = backPage.children.length;

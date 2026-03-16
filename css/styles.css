@@ -88,6 +88,21 @@ textarea {
   flex-wrap: wrap;
 }
 
+.mirror-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #c9b99a;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mirror-toggle input[type="checkbox"] {
+  accent-color: #c9a227;
+  cursor: pointer;
+}
+
 .btn {
   border: 1px solid transparent;
   border-radius: 10px;

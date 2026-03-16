@@ -18,6 +18,10 @@
       </div>
 
       <div class="topbar-actions">
+        <label class="mirror-toggle" title="Ative se sua impressora nao faz duplex automatico e voce precisa virar a folha manualmente">
+          <input type="checkbox" id="mirrorBack" checked>
+          <span>Espelhar verso</span>
+        </label>
         <button class="btn btn-secondary" type="button" onclick="resetForm()">Novo produto</button>
         <button class="btn btn-primary" id="printButton" type="button" onclick="printCards()">Imprimir</button>
       </div>
@@ -162,7 +166,7 @@
               <div class="single-preview" id="singlePreview"></div>
             </div>
 
-            <p class="canvas-note">Pre-visualizacao ao vivo. Ao imprimir, frente e verso sao enviados em paginas separadas e o verso sai espelhado por linha para montagem correta.</p>
+            <p class="canvas-note">Pre-visualizacao ao vivo. Ao imprimir, frente e verso sao enviados em paginas separadas.</p>
           </div>
 
           <aside class="batch-panel">
