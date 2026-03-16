@@ -6,7 +6,7 @@
   <title>Gerador de Etiquetas - Produtos</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Berkshire+Swash&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500&display=swap');
-    @import url('https://fonts.cdnfonts.com/css/breathing-2');
+    @import url('https://fonts.cdnfonts.com/css/breathing');
 
     :root {
       --bg: #f4eee5;
@@ -516,7 +516,7 @@
       padding: 0;
       display: grid;
       grid-template-columns: repeat(3, 63mm);
-      grid-template-rows: repeat(3, 92mm);
+      grid-template-rows: repeat(4, 70mm);
       justify-content: center;
       align-content: center;
       page-break-after: always;
@@ -525,12 +525,12 @@
 
     .card-placeholder {
       width: 63mm;
-      height: 92mm;
+      height: 70mm;
     }
 
     .card {
       width: 63mm;
-      height: 92mm;
+      height: 70mm;
       position: relative;
       overflow: hidden;
       background: #fffcf5;
@@ -614,7 +614,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 14px 10px 0;
+      padding: 10px 8px 0;
       position: relative;
       z-index: 2;
       min-height: 0;
@@ -622,7 +622,7 @@
 
     .card-front .product-type-name {
       font-family: 'Breathing', cursive;
-      font-size: 38px;
+      font-size: 26.1px;
       font-weight: 400;
       text-align: center;
       line-height: 0.92;
@@ -708,7 +708,7 @@
 
     .card-front .dates {
       width: 100%;
-      padding: 2px 14px 10px;
+      padding: 2px 10px 6px;
       position: relative;
       z-index: 2;
       flex-shrink: 0;
@@ -758,7 +758,7 @@
 
     .banner-overlay .product-type-name {
       font-family: 'Breathing', cursive;
-      font-size: 34px;
+      font-size: 26.1px;
       font-weight: 400;
       text-align: center;
       line-height: 0.92;
@@ -796,23 +796,23 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 20px 14px 12px;
+      padding: 14px 10px 8px;
       position: relative;
       z-index: 2;
     }
 
     .card-back .uso-title {
       font-family: 'Great Vibes', cursive;
-      font-size: 28px;
+      font-size: 22px;
       color: #1a1408;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       text-align: center;
     }
 
     .card-back .uso-text {
       font-family: 'Lora', serif;
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 11px;
+      line-height: 1.4;
       color: #2a1f14;
       text-align: center;
     }
@@ -1422,7 +1422,7 @@
       }
     });
 
-    const perPage = 9;
+    const perPage = 12;
     const cols = 3;
 
     for (let index = 0; index < allCards.length; index += perPage) {
