@@ -194,20 +194,31 @@ textarea {
   font-size: 0.78rem;
 }
 
+.presets-bar {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 250, 244, 0.6);
+}
+
+.presets-bar .section-label {
+  margin-bottom: 10px;
+}
+
 .preset-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .preset-btn {
   text-align: left;
-  padding: 10px 11px;
+  padding: 8px 14px;
   border-radius: 10px;
   border: 1px solid var(--line-strong);
   background: #fffdf9;
   cursor: pointer;
   transition: 0.2s ease;
+  flex: 0 0 auto;
 }
 
 .preset-btn:hover {
