@@ -2,7 +2,7 @@
 
 Aplicação web para criar e imprimir etiquetas artesanais para produtos como sais de banho, jellies e outros cosméticos naturais.
 
-**[Acessar o Gerador](https://tiagoceridorio.github.io/gerador-cartoes/)**
+**[Acessar o Gerador](https://tiagoceridorio.github.io/gerador-etiquetas/)**
 
 ## O que faz
 
