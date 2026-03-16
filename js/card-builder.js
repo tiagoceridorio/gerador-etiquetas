@@ -41,6 +41,11 @@ function illustration(card, options) {
   return '';
 }
 
+function typeName(card) {
+  var t = card.type && card.type !== 'Outro' ? esc(card.type) + '<br>' : '';
+  return '<div class="product-type-name">' + t + esc(card.name) + '</div>';
+}
+
 function buildFront(card, options) {
   var html = '<div class="card card-front">' + cardShell();
 
@@ -68,7 +73,7 @@ function buildFront(card, options) {
       bannerStyle += 'top:' + bt + '%;bottom:auto;height:' + bh + '%;width:' + bw + '%;';
       if (bw < 100) bannerStyle += 'left:50%;transform:translateX(-50%);';
       html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
-        '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
+        typeName(card) +
         ruledLines(1) +
         '<div class="product-desc">' + esc(card.desc) + '</div>' +
         '</div>';
@@ -83,7 +88,7 @@ function buildFront(card, options) {
         '</div>';
     } else {
       html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
-        '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
+        typeName(card) +
         ruledLines(1) +
         '<div class="product-desc">' + esc(card.desc) + '</div>' +
         '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
@@ -95,7 +100,7 @@ function buildFront(card, options) {
     }
   } else {
     html += '<div class="card-content">' +
-      '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
+      typeName(card) +
       ruledLines(1) +
       '<div class="product-desc">' + esc(card.desc) + '</div>' +
       descLines(1) +
