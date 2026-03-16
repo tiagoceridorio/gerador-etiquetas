@@ -715,8 +715,8 @@ textarea {
 }
 
 .image-placeholder {
-  width: 70%;
-  height: 56%;
+  width: 85%;
+  height: 80%;
   border: 1px dashed rgba(140, 101, 66, 0.35);
   border-radius: 8px;
   display: flex;
