@@ -4,6 +4,12 @@ var currentBannerImageDataURL = null;
 function resetForm(shouldRender) {
   if (shouldRender === undefined) shouldRender = true;
 
+  if (typeof editingIndex !== 'undefined' && editingIndex !== null) {
+    editingIndex = null;
+    updateSaveButton();
+    renderBatch();
+  }
+
   var today = new Date();
   var nextYear = new Date(today);
   nextYear.setFullYear(nextYear.getFullYear() + 1);
