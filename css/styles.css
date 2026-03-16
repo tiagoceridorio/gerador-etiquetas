@@ -257,6 +257,10 @@ textarea {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.field-grid.three-cols {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -794,9 +798,6 @@ textarea {
   border-radius: 6px;
   text-align: center;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -901,7 +902,25 @@ textarea {
 }
 
 .banner-overlay.has-image {
-  background-size: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.banner-overlay.has-image.bg-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.banner-overlay.has-image.bg-contain {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.banner-overlay.has-image.bg-repeat {
+  background-size: 50%;
   background-repeat: repeat;
 }
 

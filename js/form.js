@@ -18,6 +18,10 @@ function resetForm(shouldRender) {
   document.getElementById('productEmoji').value = '';
   document.getElementById('hasBanner').checked = false;
   document.getElementById('bannerColor').value = '#3c2814';
+  document.getElementById('bannerWidth').value = 100;
+  document.getElementById('bannerHeight').value = 100;
+  document.getElementById('bannerTopSpace').value = 0;
+  document.getElementById('bannerRepeat').value = 'cover';
   document.getElementById('bannerImage').value = '';
   currentBannerImageDataURL = null;
   syncBannerImagePreview();
@@ -90,7 +94,7 @@ function handleBannerImageChange(event) {
 
 function toggleBannerImageField() {
   var show = document.getElementById('hasBanner').checked;
-  document.getElementById('bannerImageField').style.display = show ? '' : 'none';
+  document.getElementById('bannerOptionsField').style.display = show ? '' : 'none';
 }
 
 function getFormCardData(previewMode) {
@@ -104,6 +108,10 @@ function getFormCardData(previewMode) {
   var qty = parseInt(document.getElementById('qty').value, 10) || 1;
   var hasBanner = document.getElementById('hasBanner').checked;
   var bannerColor = document.getElementById('bannerColor').value;
+  var bannerWidth = parseInt(document.getElementById('bannerWidth').value, 10) || 100;
+  var bannerHeight = parseInt(document.getElementById('bannerHeight').value, 10) || 100;
+  var bannerTopSpace = parseInt(document.getElementById('bannerTopSpace').value, 10) || 0;
+  var bannerRepeat = document.getElementById('bannerRepeat').value || 'cover';
 
   return {
     type: type,
@@ -116,6 +124,10 @@ function getFormCardData(previewMode) {
     qty: qty,
     hasBanner: hasBanner,
     bannerColor: bannerColor,
+    bannerWidth: bannerWidth,
+    bannerHeight: bannerHeight,
+    bannerTopSpace: bannerTopSpace,
+    bannerRepeat: bannerRepeat,
     bannerImageDataURL: currentBannerImageDataURL,
     imageDataURL: currentImageDataURL
   };
@@ -134,6 +146,10 @@ function loadPreset(index) {
     qty: 1,
     hasBanner: !!preset.banner,
     bannerColor: preset.bannerColor || '#3c2814',
+    bannerWidth: preset.bannerWidth || 100,
+    bannerHeight: preset.bannerHeight || 100,
+    bannerTopSpace: preset.bannerTopSpace || 0,
+    bannerRepeat: preset.bannerRepeat || 'cover',
     bannerImageDataURL: null,
     imageDataURL: null
   });
@@ -150,6 +166,10 @@ function applyCardToForm(card) {
   document.getElementById('productEmoji').value = card.emoji || '';
   document.getElementById('hasBanner').checked = !!card.hasBanner;
   document.getElementById('bannerColor').value = card.bannerColor || '#3c2814';
+  document.getElementById('bannerWidth').value = card.bannerWidth || 100;
+  document.getElementById('bannerHeight').value = card.bannerHeight || 100;
+  document.getElementById('bannerTopSpace').value = card.bannerTopSpace || 0;
+  document.getElementById('bannerRepeat').value = card.bannerRepeat || 'cover';
   document.getElementById('bannerImage').value = '';
   currentBannerImageDataURL = card.bannerImageDataURL || null;
   syncBannerImagePreview();

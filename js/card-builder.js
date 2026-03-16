@@ -50,18 +50,49 @@ function buildFront(card, options) {
     var bannerClass = 'banner-overlay';
     if (card.bannerImageDataURL) {
       bannerStyle = 'background-image:url(' + card.bannerImageDataURL + ');';
-      bannerClass = 'banner-overlay has-image';
+      var repeat = card.bannerRepeat || 'cover';
+      if (repeat === 'repeat') {
+        bannerClass = 'banner-overlay has-image bg-repeat';
+      } else if (repeat === 'contain') {
+        bannerClass = 'banner-overlay has-image bg-contain';
+      } else {
+        bannerClass = 'banner-overlay has-image bg-cover';
+      }
     }
-    html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
-      '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
-      ruledLines(1) +
-      '<div class="product-desc">' + esc(card.desc) + '</div>' +
-      '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
-      '<div class="dates">' +
-        '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
-        '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
-      '</div>' +
-      '</div>';
+    var bw = card.bannerWidth || 100;
+    var bh = card.bannerHeight || 100;
+    var bt = card.bannerTopSpace || 0;
+    var isPartial = bw < 100 || bh < 100 || bt > 0;
+
+    if (isPartial) {
+      bannerStyle += 'top:' + bt + '%;bottom:auto;height:' + bh + '%;width:' + bw + '%;';
+      if (bw < 100) bannerStyle += 'left:50%;transform:translateX(-50%);';
+      html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
+        '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
+        ruledLines(1) +
+        '<div class="product-desc">' + esc(card.desc) + '</div>' +
+        '</div>';
+
+      var contentTop = bt + bh;
+      html += '<div class="card-content" style="position:absolute;top:' + contentTop + '%;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;padding:4px 8px 8px;">' +
+        '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
+        '<div class="dates">' +
+          '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
+          '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
+        '</div>' +
+        '</div>';
+    } else {
+      html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
+        '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
+        ruledLines(1) +
+        '<div class="product-desc">' + esc(card.desc) + '</div>' +
+        '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
+        '<div class="dates">' +
+          '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
+          '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
+        '</div>' +
+        '</div>';
+    }
   } else {
     html += '<div class="card-content">' +
       '<div class="product-type-name">' + esc(card.type) + '<br>' + esc(card.name) + '</div>' +
