@@ -3,221 +3,511 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de Cartões - Produtos</title>
+  <title>Gerador de Etiquetas - Produtos</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Berkshire+Swash&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+    :root {
+      --bg: #f4eee5;
+      --bg-soft: #fbf8f3;
+      --panel: rgba(255, 252, 247, 0.9);
+      --panel-strong: #fffdf9;
+      --line: #e6d8c5;
+      --line-strong: #d7c2a7;
+      --text: #4d3a2b;
+      --muted: #9a8b7b;
+      --accent: #8c6542;
+      --accent-strong: #6f4d30;
+      --accent-soft: #c7af94;
+      --danger: #b55245;
+      --shadow: 0 20px 40px rgba(86, 59, 38, 0.08);
+    }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Lora', serif;
-      background: #f5f0e8;
-      color: #3a2e1f;
+      background:
+        radial-gradient(circle at top, rgba(255, 247, 232, 0.9), transparent 30%),
+        linear-gradient(180deg, #f8f2e8 0%, #efe6d8 100%);
+      color: var(--text);
       min-height: 100vh;
     }
 
-    /* ========== PAINEL DE CONTROLE ========== */
-    .controls {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 30px 20px;
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
     }
 
-    .controls h1 {
-      font-family: 'Playfair Display', serif;
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 8px;
-      color: #5a3e28;
+    .app-shell {
+      min-height: 100vh;
+      padding: 12px;
     }
 
-    .controls .subtitle {
-      text-align: center;
-      font-style: italic;
-      color: #8a7560;
-      margin-bottom: 30px;
+    .editor {
+      min-height: calc(100vh - 24px);
+      background: rgba(255, 252, 247, 0.8);
+      border: 1px solid rgba(214, 197, 175, 0.8);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    .form-section {
-      background: #fff;
-      border: 1px solid #d4c5a9;
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-
-    .form-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      margin-bottom: 16px;
-      color: #5a3e28;
-      border-bottom: 1px solid #e8dcc8;
-      padding-bottom: 8px;
-    }
-
-    .form-row {
+    .topbar {
       display: flex;
-      gap: 16px;
-      margin-bottom: 12px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 250, 244, 0.86);
+    }
+
+    .brand h1 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.55rem;
+      line-height: 1;
+      color: var(--accent-strong);
+    }
+
+    .brand p {
+      margin-top: 4px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
       flex-wrap: wrap;
     }
 
-    .form-group {
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 11px 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 700;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #c4ab93 0%, #b79b82 100%);
+      color: #fffdf8;
+    }
+
+    .btn-primary:hover { background: linear-gradient(180deg, #b7997d 0%, #a78669 100%); }
+
+    .btn-secondary {
+      background: #fffaf3;
+      color: var(--accent-strong);
+      border-color: var(--line-strong);
+    }
+
+    .btn-secondary:hover { background: #f7efe3; }
+
+    .btn-save {
+      width: 100%;
+      justify-content: center;
+      background: linear-gradient(180deg, #916744 0%, #7c5636 100%);
+      color: #fff9f1;
+    }
+
+    .btn-save:hover { background: linear-gradient(180deg, #855d3c 0%, #6f4b2f 100%); }
+
+    .btn-inline {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      padding: 0;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-inline:hover { color: var(--accent-strong); transform: none; }
+
+    .btn-inline.danger { color: var(--danger); }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      min-height: calc(100vh - 99px);
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--line);
+      background: rgba(255, 251, 246, 0.76);
       display: flex;
       flex-direction: column;
-      flex: 1;
-      min-width: 180px;
+      min-height: 100%;
     }
 
-    .form-group label {
-      font-size: 0.85rem;
+    .sidebar-scroll {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .sidebar-section {
+      padding: 18px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-title {
+      font-size: 0.98rem;
       font-weight: 700;
-      margin-bottom: 4px;
-      color: #6b5a45;
+      color: var(--accent-strong);
+      margin-bottom: 14px;
     }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      padding: 8px 12px;
-      border: 1px solid #d4c5a9;
-      border-radius: 4px;
-      font-family: 'Lora', serif;
-      font-size: 0.9rem;
-      background: #fdfbf7;
+    .section-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
     }
 
-    .form-group textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .form-group input[type="file"] {
-      padding: 6px;
-      font-size: 0.8rem;
-    }
-
-    .image-preview {
-      margin-top: 6px;
-      max-width: 120px;
-      max-height: 80px;
-      border-radius: 4px;
-      border: 1px solid #d4c5a9;
-      display: none;
+    .counter-badge {
+      min-width: 26px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #efe3d2;
+      color: var(--accent-strong);
+      text-align: center;
+      font-size: 0.78rem;
     }
 
     .preset-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-      margin-bottom: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
     }
 
     .preset-btn {
-      padding: 10px 14px;
-      border: 2px solid #d4c5a9;
-      border-radius: 6px;
-      background: #fdfbf7;
-      cursor: pointer;
-      font-family: 'Lora', serif;
-      font-size: 0.85rem;
       text-align: left;
-      transition: all 0.2s;
+      padding: 10px 11px;
+      border-radius: 10px;
+      border: 1px solid var(--line-strong);
+      background: #fffdf9;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
 
     .preset-btn:hover {
-      border-color: #8a6d4b;
-      background: #f5edd8;
+      background: #f8f0e4;
+      border-color: #c7ae8b;
+      transform: translateY(-1px);
     }
 
-    .preset-btn .preset-name {
-      font-weight: 700;
-      font-family: 'Playfair Display', serif;
+    .preset-name {
       display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.92rem;
+      color: var(--accent-strong);
       margin-bottom: 2px;
     }
 
-    .preset-btn .preset-desc {
-      color: #8a7560;
-      font-size: 0.8rem;
+    .preset-desc {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.25;
     }
 
-    .qty-row {
+    .field-stack {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 12px;
-      margin-top: 12px;
     }
 
-    .qty-row label { font-weight: 700; color: #6b5a45; font-size: 0.85rem; }
-
-    .qty-input {
-      width: 60px;
-      padding: 6px 8px;
-      border: 1px solid #d4c5a9;
-      border-radius: 4px;
-      font-family: 'Lora', serif;
-      text-align: center;
+    .field-grid {
+      display: grid;
+      gap: 12px;
     }
 
-    .added-cards { margin-top: 16px; }
+    .field-grid.two-cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-    .added-card-item {
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.79rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fffdf9;
+      padding: 11px 12px;
+      color: var(--text);
+      transition: 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: #b99d7d;
+      box-shadow: 0 0 0 3px rgba(185, 157, 125, 0.16);
+    }
+
+    .field textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .field-hint {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .upload-box {
       display: flex;
       align-items: center;
+      gap: 10px;
+    }
+
+    .image-preview {
+      width: 54px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      display: none;
+      background: #fff;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 12px;
+      background: #fffaf4;
+    }
+
+    .toggle-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent);
+    }
+
+    .toggle-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .toggle-copy strong {
+      font-size: 0.84rem;
+      color: var(--accent-strong);
+    }
+
+    .toggle-copy span {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .color-swatch {
+      width: 42px;
+      height: 34px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: transparent;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 160px;
+    }
+
+    .product-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fffdf9;
+      padding: 12px;
+    }
+
+    .product-item-header {
+      display: flex;
+      align-items: flex-start;
       justify-content: space-between;
-      padding: 10px 14px;
-      background: #f9f4ea;
-      border: 1px solid #e8dcc8;
-      border-radius: 6px;
+      gap: 10px;
       margin-bottom: 8px;
     }
 
-    .added-card-item .info { font-size: 0.9rem; }
-    .added-card-item .info strong { font-family: 'Playfair Display', serif; }
-
-    .btn-remove {
-      background: #c0392b; color: #fff; border: none;
-      border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem;
-    }
-    .btn-remove:hover { background: #96281b; }
-
-    .actions {
-      display: flex; gap: 12px; justify-content: center;
-      margin-top: 20px; flex-wrap: wrap;
+    .product-item-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem;
+      color: var(--accent-strong);
     }
 
-    .btn {
-      padding: 12px 28px; border: none; border-radius: 6px;
-      font-family: 'Playfair Display', serif; font-size: 1rem;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .btn-primary { background: #5a3e28; color: #fff; }
-    .btn-primary:hover { background: #7a5838; }
-    .btn-secondary { background: #d4c5a9; color: #3a2e1f; }
-    .btn-secondary:hover { background: #c4b599; }
-    .btn-add { background: #2e7d32; color: #fff; }
-    .btn-add:hover { background: #1b5e20; }
-
-    .checkbox-row {
-      display: flex; align-items: center; gap: 8px; margin-top: 8px;
-    }
-    .checkbox-row input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: #5a3e28;
-    }
-    .checkbox-row label {
-      font-size: 0.85rem; color: #6b5a45; font-weight: 400;
+    .product-item-subtitle {
+      margin-top: 2px;
+      font-size: 0.8rem;
+      color: var(--muted);
     }
 
-    .banner-color-input {
-      width: 40px; height: 28px; border: 1px solid #d4c5a9;
-      border-radius: 4px; cursor: pointer; padding: 2px;
+    .qty-chip {
+      border-radius: 999px;
+      background: #efe3d2;
+      color: var(--accent-strong);
+      padding: 4px 8px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
-    /* ========== IMPRESSÃO ========== */
+    .product-item-meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .product-item-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .empty-state {
+      border: 1px dashed var(--line-strong);
+      border-radius: 12px;
+      background: rgba(255, 252, 247, 0.66);
+      padding: 20px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .canvas-area {
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, rgba(255, 252, 247, 0.56), rgba(253, 248, 241, 0.96));
+      min-width: 0;
+    }
+
+    .canvas-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 22px 0;
+      flex-wrap: wrap;
+    }
+
+    .canvas-copy strong {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--accent-strong);
+      margin-bottom: 2px;
+    }
+
+    .canvas-copy span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .preview-tabs {
+      display: inline-flex;
+      padding: 4px;
+      border: 1px solid var(--line);
+      background: #fffaf4;
+      border-radius: 12px;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(180deg, #9f7651 0%, #8a6341 100%);
+      color: #fff9f3;
+      box-shadow: 0 6px 14px rgba(124, 86, 54, 0.18);
+    }
+
+    .canvas-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 24px 14px;
+      min-height: 520px;
+    }
+
+    .single-preview {
+      width: min(100%, 520px);
+      min-height: 430px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at top, rgba(255, 253, 248, 0.96), rgba(248, 240, 227, 0.82)),
+        linear-gradient(180deg, #f7efe2 0%, #f4ebdd 100%);
+      border: 1px solid rgba(214, 197, 175, 0.8);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      padding: 22px;
+    }
+
+    .preview-card-shell {
+      transform: scale(1.22);
+      transform-origin: center center;
+    }
+
+    .canvas-note {
+      padding: 0 22px 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
     .print-area { display: none; }
 
-    /* ========== CARTÃO ========== */
     .card-page {
       width: 210mm;
       height: 297mm;
@@ -237,185 +527,240 @@
       height: 92mm;
     }
 
-    /* Marcas de corte */
-    .crop-marks {
-      position: absolute;
-      top: 0; left: 0;
-      width: 210mm;
-      height: 297mm;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .crop-mark {
-      position: absolute;
-      background: #000;
-    }
-
-    .crop-mark-h {
-      width: 5mm;
-      height: 0.2mm;
-    }
-
-    .crop-mark-v {
-      width: 0.2mm;
-      height: 5mm;
-    }
-
     .card {
       width: 63mm;
       height: 92mm;
       position: relative;
       overflow: hidden;
-      background: #fffcf5;
+      background: linear-gradient(180deg, #fffdf7 0%, #fbf3e4 48%, #f7ecd8 100%);
       display: flex;
       flex-direction: column;
-      border-radius: 6px;
+      border-radius: 2px;
+      box-shadow: 0 2mm 5mm rgba(88, 58, 31, 0.12);
     }
 
-    /* Borda externa vintage */
     .card-border-outer {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      border: 3px solid #9a7a48;
-      border-radius: 6px;
+      top: 1.5px;
+      left: 1.5px;
+      right: 1.5px;
+      bottom: 1.5px;
+      border: 2.8px solid #6f4624;
+      border-radius: 2px;
       pointer-events: none;
       z-index: 2;
-      /* Sombra para dar profundidade */
-      box-shadow: inset 0 0 3px rgba(140, 100, 40, 0.15);
+      box-shadow: inset 0 0 0 1px rgba(168, 122, 70, 0.25);
     }
 
-    /* Borda interna decorativa */
     .card-border-inner {
       position: absolute;
-      top: 5px; left: 5px; right: 5px; bottom: 5px;
-      border: 1.5px solid #c4a96a;
-      border-radius: 3px;
+      top: 7px;
+      left: 7px;
+      right: 7px;
+      bottom: 7px;
+      border: 1.4px solid #98672c;
+      border-radius: 2px;
       pointer-events: none;
       z-index: 2;
     }
 
-    /* Cantos decorativos */
     .corner {
       position: absolute;
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       z-index: 3;
       pointer-events: none;
     }
-    .corner svg { width: 100%; height: 100%; }
-    .corner-tl { top: 3px; left: 3px; }
-    .corner-tr { top: 3px; right: 3px; transform: scaleX(-1); }
-    .corner-bl { bottom: 3px; left: 3px; transform: scaleY(-1); }
-    .corner-br { bottom: 3px; right: 3px; transform: scale(-1, -1); }
 
-    /* Furo */
-    .hole {
+    .corner svg { width: 100%; height: 100%; }
+    .corner-tl { top: 2px; left: 2px; }
+    .corner-tr { top: 2px; right: 2px; transform: scaleX(-1); }
+    .corner-bl { bottom: 2px; left: 2px; transform: scaleY(-1); }
+    .corner-br { bottom: 2px; right: 2px; transform: scale(-1, -1); }
+
+    .pin {
       position: absolute;
-      top: 7px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
+      background: #6f4624;
       border-radius: 50%;
-      border: 1.5px solid #8a6d4b;
-      background: #fff;
-      z-index: 4;
+      z-index: 3;
+      box-shadow: 0 0 0 1px rgba(111, 70, 36, 0.18);
     }
 
-    /* Textura */
+    .pin-tl { top: 8px; left: 8px; }
+    .pin-tr { top: 8px; right: 8px; }
+    .pin-bl { bottom: 8px; left: 8px; }
+    .pin-br { bottom: 8px; right: 8px; }
+
+    .hole {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid #8a6d4b;
+      background: radial-gradient(circle at 30% 30%, #fffdf7, #e9d9ba 85%);
+      z-index: 4;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+
     .card-texture {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       opacity: 0.035;
       background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Envelhecimento nos cantos */
     .card-aging {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background:
-        radial-gradient(ellipse at 0% 0%, rgba(160,120,60,0.13) 0%, transparent 35%),
-        radial-gradient(ellipse at 100% 0%, rgba(160,120,60,0.10) 0%, transparent 35%),
-        radial-gradient(ellipse at 0% 100%, rgba(160,120,60,0.13) 0%, transparent 35%),
-        radial-gradient(ellipse at 100% 100%, rgba(160,120,60,0.10) 0%, transparent 35%),
-        radial-gradient(ellipse at 50% 100%, rgba(160,120,60,0.06) 0%, transparent 30%);
+        radial-gradient(ellipse at 0% 0%, rgba(160, 120, 60, 0.13) 0%, transparent 35%),
+        radial-gradient(ellipse at 100% 0%, rgba(160, 120, 60, 0.10) 0%, transparent 35%),
+        radial-gradient(ellipse at 0% 100%, rgba(160, 120, 60, 0.13) 0%, transparent 35%),
+        radial-gradient(ellipse at 100% 100%, rgba(160, 120, 60, 0.10) 0%, transparent 35%),
+        radial-gradient(ellipse at 50% 100%, rgba(160, 120, 60, 0.06) 0%, transparent 30%);
       pointer-events: none;
       z-index: 1;
       border-radius: 6px;
     }
 
-    /* === FRENTE === */
     .card-front .card-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 14px 10px 0;
+      padding: 15px 10px 9px;
       position: relative;
       z-index: 2;
       min-height: 0;
     }
 
-    .card-front .product-type-name {
-      font-family: 'Great Vibes', cursive;
-      font-size: 38px;
-      font-weight: 400;
-      text-align: center;
-      line-height: 0.92;
-      color: #1a1408;
-      margin-top: 0;
-    }
-
-    .card-front .ruled-lines {
-      width: 74%;
-      margin: 7px auto 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .card-front .ruled-line {
-      width: 100%;
-      height: 0;
-      border-top: 1px solid #1a1408;
-    }
-
-    .card-front .product-desc {
-      font-family: 'Lora', serif;
-      font-size: 14px;
-      font-weight: 700;
-      text-align: center;
-      color: #1a1408;
-      margin: 1px 0;
-    }
-
-    .card-front .desc-lines {
-      width: 60%;
-      margin: 4px auto 2px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .card-front .desc-line {
-      width: 100%;
-      height: 0;
-      border-top: 1px solid #999;
-    }
-
-    /* Imagem */
-    .card-front .illustration-area {
-      flex: 1;
+    .card-front .top-ornament,
+    .card-back .top-ornament {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2px 12px;
+      gap: 6px;
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+
+    .top-ornament .ornament-line {
+      flex: 1;
+      max-width: 68px;
+      height: 2px;
+      border-top: 1px solid rgba(87, 51, 22, 0.9);
+      border-bottom: 1px dotted rgba(121, 79, 38, 0.65);
+    }
+
+    .top-ornament .ornament-dots {
+      color: #7c542c;
+      letter-spacing: 2px;
+      font-size: 8px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .card-front .title-block {
+      width: 100%;
+      text-align: center;
+      padding: 3px 6px 0;
+      border-radius: 14px 14px 3px 3px;
+    }
+
+    .card-front.bannered .title-block {
+      padding: 9px 8px 7px;
+      margin-top: 2px;
+      box-shadow: inset 0 0 0 1px rgba(255, 241, 217, 0.18);
+    }
+
+    .card-front .product-kicker {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 8px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #59361c;
+      margin-bottom: 4px;
+    }
+
+    .card-front .title-divider {
+      width: 86%;
+      height: 1px;
+      margin: 0 auto 6px;
+      background: linear-gradient(90deg, transparent, rgba(101, 60, 26, 0.9) 18%, rgba(101, 60, 26, 0.9) 82%, transparent);
+    }
+
+    .card-front .product-name-main {
+      font-family: 'Great Vibes', cursive;
+      font-size: 34px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 0.88;
+      color: #2b1609;
+      margin-top: 1px;
+    }
+
+    .card-front .product-type-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #6a4422;
+      margin-top: 2px;
+    }
+
+    .card-front .product-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 600;
+      line-height: 0.96;
+      text-align: center;
+      color: #2b1609;
+      margin: 3px auto 0;
+      width: 88%;
+    }
+
+    .card-front.bannered .product-kicker,
+    .card-front.bannered .product-name-main,
+    .card-front.bannered .product-type-note,
+    .card-front.bannered .product-desc {
+      color: #f9ecd7;
+    }
+
+    .card-front.bannered .title-divider {
+      background: linear-gradient(90deg, transparent, rgba(249, 236, 215, 0.92) 18%, rgba(249, 236, 215, 0.92) 82%, transparent);
+    }
+
+    .card-front .hero-divider {
+      width: 82%;
+      height: 1px;
+      margin: 7px auto 6px;
+      background: linear-gradient(90deg, transparent, rgba(121, 79, 38, 0.8) 15%, rgba(121, 79, 38, 0.8) 85%, transparent);
+    }
+
+    .card-front .illustration-frame {
+      width: 100%;
+      flex: 1;
       min-height: 0;
+      padding: 0 6px;
+    }
+
+    .card-front .illustration-area {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 2px 8px 0;
       overflow: hidden;
     }
 
@@ -423,166 +768,199 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(72, 44, 18, 0.18));
     }
 
     .card-front .illustration-area .emoji-illust {
-      font-size: 72px;
+      font-size: 68px;
       line-height: 1;
+      filter: saturate(0.8);
     }
 
-    /* Datas */
+    .image-placeholder {
+      width: 70%;
+      height: 56%;
+      border: 1px dashed rgba(140, 101, 66, 0.35);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(140, 101, 66, 0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(255, 252, 247, 0.4);
+    }
+
+    .card-front .seal-ribbon {
+      position: relative;
+      min-width: 66%;
+      margin: 4px auto 5px;
+      padding: 5px 18px 6px;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: #4a2d18;
+      background: linear-gradient(180deg, #efd39a 0%, #d9b46f 52%, #c7964a 100%);
+      border: 1px solid rgba(128, 82, 31, 0.55);
+      clip-path: polygon(7% 0, 93% 0, 100% 24%, 94% 100%, 6% 100%, 0 24%);
+      box-shadow: 0 2px 5px rgba(92, 59, 26, 0.12);
+    }
+
+    .card-front .seal-ribbon::before,
+    .card-front .seal-ribbon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 12px;
+      height: 8px;
+      background: rgba(152, 103, 44, 0.28);
+      transform: translateY(-50%);
+    }
+
+    .card-front .seal-ribbon::before { left: -7px; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+    .card-front .seal-ribbon::after { right: -7px; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+
     .card-front .dates {
       width: 100%;
-      padding: 2px 14px 10px;
+      padding: 0 13px 0;
       position: relative;
       z-index: 2;
       flex-shrink: 0;
-      text-align: center;
+      text-align: left;
     }
 
     .card-front .date-row {
       display: flex;
-      align-items: baseline;
-      justify-content: center;
-      margin-bottom: 0px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
+      padding-top: 2px;
+      border-top: 1px solid rgba(135, 94, 55, 0.26);
     }
 
     .card-front .date-label {
-      font-family: 'Dancing Script', cursive;
-      font-size: 14px;
-      font-weight: 700;
-      color: #3a2818;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 6.7px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: #6a4422;
       white-space: nowrap;
     }
 
     .card-front .date-value {
-      font-family: 'Lora', serif;
-      font-size: 11px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      font-weight: 600;
       color: #3a2818;
-      margin-left: 5px;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.3px;
       white-space: nowrap;
     }
 
-    .card-front .date-underline {
-      flex: 1;
-      border-bottom: 1px solid #aaa;
-      margin-left: 6px;
-      margin-bottom: 2px;
-    }
-
-    /* Banner escuro */
-    .banner-overlay {
-      position: absolute;
-      top: 14px; left: 5px; right: 5px;
-      padding: 8px 10px 10px;
-      z-index: 5;
-      border-radius: 2px;
-      text-align: center;
-    }
-
-    .banner-overlay .product-type-name {
-      font-family: 'Great Vibes', cursive;
-      font-size: 34px;
-      font-weight: 400;
-      text-align: center;
-      line-height: 0.92;
-      color: #f5edd8;
-    }
-
-    .banner-overlay .ruled-lines {
-      width: 74%;
-      margin: 6px auto 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .banner-overlay .ruled-line {
-      border-color: rgba(245,237,216,0.35);
-    }
-
-    .banner-overlay .product-desc {
-      font-family: 'Lora', serif;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #f5edd8;
-      text-align: center;
-    }
-
-    /* === VERSO === */
     .card-back .card-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 20px 14px 12px;
+      padding: 17px 12px 12px;
       position: relative;
       z-index: 2;
     }
 
     .card-back .uso-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: 28px;
-      color: #1a1408;
-      margin-bottom: 12px;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 10px;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: #5d381f;
+      margin-top: 2px;
+      margin-bottom: 8px;
       text-align: center;
     }
 
+    .card-back .usage-panel {
+      width: 100%;
+      flex: 1;
+      border: 1px solid rgba(126, 85, 47, 0.42);
+      background: rgba(255, 252, 244, 0.54);
+      padding: 10px 10px 12px;
+      box-shadow: inset 0 0 0 1px rgba(209, 173, 123, 0.16);
+    }
+
     .card-back .uso-text {
-      font-family: 'Lora', serif;
-      font-size: 13px;
-      line-height: 1.55;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      line-height: 1.34;
       color: #2a1f14;
       text-align: center;
     }
 
-    /* ========== PREVIEW ========== */
-    .preview-area {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 20px 40px;
+    @media (max-width: 1080px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .canvas-stage {
+        min-height: 440px;
+      }
     }
 
-    .preview-area h2 {
-      font-family: 'Playfair Display', serif;
-      text-align: center;
-      margin-bottom: 20px;
-      color: #5a3e28;
+    @media (max-width: 720px) {
+      .app-shell {
+        padding: 0;
+      }
+
+      .editor {
+        min-height: 100vh;
+        border-radius: 0;
+      }
+
+      .topbar {
+        padding: 16px;
+      }
+
+      .brand h1 { font-size: 1.35rem; }
+
+      .field-grid.two-cols {
+        grid-template-columns: 1fr;
+      }
+
+      .preset-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .canvas-toolbar {
+        padding: 16px 16px 0;
+      }
+
+      .canvas-stage {
+        padding: 20px 14px 12px;
+        min-height: 390px;
+      }
+
+      .single-preview {
+        padding: 18px 10px;
+      }
+
+      .preview-card-shell {
+        transform: scale(0.98);
+      }
+
+      .canvas-note {
+        padding: 0 16px 18px;
+      }
     }
 
-    .preview-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-
-    .preview-pair {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .preview-label {
-      text-align: center;
-      font-size: 0.7rem;
-      color: #8a7560;
-      margin-top: 4px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: #aaa;
-      font-style: italic;
-    }
-
-    /* ========== PRINT ========== */
     @media print {
       body { background: #fff; margin: 0; padding: 0; }
-      .controls, .preview-area, .actions { display: none !important; }
+      .app-shell { display: none !important; }
       .print-area { display: block !important; }
       .card-page { margin: 0; padding: 0; }
       @page { size: A4; margin: 0; }
@@ -591,183 +969,282 @@
 </head>
 <body>
 
-<div class="controls">
-  <h1>Gerador de Cartões</h1>
-  <p class="subtitle">Crie etiquetas personalizadas para seus produtos artesanais</p>
+<div class="app-shell">
+  <div class="editor">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Gerador de Etiquetas</h1>
+        <p>Cadastre seus produtos e imprima etiquetas</p>
+      </div>
 
-  <div class="form-section">
-    <h2>Produtos Cadastrados</h2>
-    <div class="preset-grid" id="presetGrid"></div>
+      <div class="topbar-actions">
+        <button class="btn btn-secondary" type="button" onclick="resetForm()">Novo produto</button>
+        <button class="btn btn-primary" id="printButton" type="button" onclick="printCards()">Imprimir</button>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar">
+        <div class="sidebar-scroll">
+          <section class="sidebar-section">
+            <div class="section-label">
+              <span>Modelos rapidos</span>
+            </div>
+            <div class="preset-grid" id="presetGrid"></div>
+          </section>
+
+          <section class="sidebar-section">
+            <div class="section-title">Novo Produto</div>
+
+            <div class="field-stack">
+              <div class="field-grid two-cols">
+                <div class="field">
+                  <label for="productType">Tipo</label>
+                  <select id="productType">
+                    <option value="Sal">Sal</option>
+                    <option value="Jelly">Jelly</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="qty">Quantidade</label>
+                  <input type="number" id="qty" min="1" max="50" value="1">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="productName">Nome do produto</label>
+                <input type="text" id="productName" placeholder="Ex: Sal Estimulante">
+              </div>
+
+              <div class="field">
+                <label for="productDesc">Subtitulo / ingredientes</label>
+                <input type="text" id="productDesc" placeholder="Ex: Gengibre &amp; Canela">
+              </div>
+
+              <div class="field-grid two-cols">
+                <div class="field">
+                  <label for="fabricDate">Fabricacao</label>
+                  <input type="date" id="fabricDate">
+                </div>
+
+                <div class="field">
+                  <label for="validDate">Validade</label>
+                  <input type="date" id="validDate">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="usageText">Modo de uso</label>
+                <textarea id="usageText" placeholder="Descreva como usar o produto"></textarea>
+              </div>
+
+              <div class="field-grid two-cols">
+                <div class="field">
+                  <label for="productImage">Imagem botanica</label>
+                  <div class="upload-box">
+                    <input type="file" id="productImage" accept="image/*">
+                    <img id="imagePreview" class="image-preview" alt="Preview da imagem">
+                  </div>
+                  <div class="field-hint">Use imagem ou emoji. Se os dois existirem, a imagem tem prioridade.</div>
+                </div>
+
+                <div class="field">
+                  <label for="productEmoji">Emoji</label>
+                  <input type="text" id="productEmoji" placeholder="Ex: 🌿🥥">
+                </div>
+              </div>
+
+              <div class="toggle-row">
+                <input type="checkbox" id="hasBanner">
+                <div class="toggle-copy">
+                  <strong>Banner escuro</strong>
+                  <span>Bom para linhas noturnas ou edicoes premium</span>
+                </div>
+                <input type="color" id="bannerColor" class="color-swatch" value="#3c2814" title="Cor do banner">
+              </div>
+
+              <button class="btn btn-save" type="button" onclick="addCard()">Salvar produto</button>
+            </div>
+          </section>
+
+          <section class="sidebar-section">
+            <div class="section-label">
+              <span id="productCountLabel">Produtos</span>
+              <span class="counter-badge" id="productCountBadge">0</span>
+            </div>
+
+            <div class="product-list" id="addedCards"></div>
+
+            <div class="sidebar-footer">
+              <button class="btn-inline" type="button" onclick="clearAll()">Limpar lote</button>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <main class="canvas-area">
+        <div class="canvas-toolbar">
+          <div class="canvas-copy">
+            <strong>Pre-visualizacao ao vivo</strong>
+            <span id="previewStatus">Edite os campos e acompanhe o resultado imediatamente.</span>
+          </div>
+
+          <div class="preview-tabs" role="tablist" aria-label="Selecionar lado do cartao">
+            <button class="tab-btn active" type="button" data-side="front">Frente</button>
+            <button class="tab-btn" type="button" data-side="back">Verso</button>
+          </div>
+        </div>
+
+        <div class="canvas-stage">
+          <div class="single-preview" id="singlePreview"></div>
+        </div>
+
+        <p class="canvas-note">Pre-visualizacao ao vivo. Ao imprimir, frente e verso sao enviados em paginas separadas e o verso sai espelhado por linha para montagem correta.</p>
+      </main>
+    </div>
   </div>
-
-  <div class="form-section">
-    <h2>Personalizar Cartão</h2>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Tipo de Produto</label>
-        <select id="productType">
-          <option value="Sal">Sal</option>
-          <option value="Jelly">Jelly</option>
-          <option value="Outro">Outro (personalizado)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Nome do Produto</label>
-        <input type="text" id="productName" placeholder="Ex: Estimulante">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Ingredientes / Descrição</label>
-        <input type="text" id="productDesc" placeholder="Ex: Gengibre &amp; Canela">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Imagem Botânica (upload)</label>
-        <input type="file" id="productImage" accept="image/*">
-        <img id="imagePreview" class="image-preview" alt="preview">
-      </div>
-      <div class="form-group">
-        <label>Ou emoji como ilustração</label>
-        <input type="text" id="productEmoji" placeholder="Deixe vazio se usar imagem">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Data de Fabricação</label>
-        <input type="date" id="fabricDate">
-      </div>
-      <div class="form-group">
-        <label>Data de Validade</label>
-        <input type="date" id="validDate">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Modo de Uso (verso)</label>
-        <textarea id="usageText"></textarea>
-      </div>
-    </div>
-
-    <div class="checkbox-row">
-      <input type="checkbox" id="hasBanner">
-      <label for="hasBanner">Fundo escuro no título (estilo Sal Noturno)</label>
-      <input type="color" id="bannerColor" class="banner-color-input" value="#3c2814" title="Cor do banner">
-    </div>
-
-    <div class="qty-row">
-      <label>Quantidade:</label>
-      <input type="number" class="qty-input" id="qty" value="1" min="1" max="50">
-      <button class="btn btn-add" onclick="addCard()">Adicionar ao Lote</button>
-    </div>
-  </div>
-
-  <div class="form-section">
-    <h2>Lote de Impressão</h2>
-    <div id="addedCards" class="added-cards">
-      <div class="empty-state">Nenhum cartão adicionado ainda</div>
-    </div>
-  </div>
-
-  <div class="actions">
-    <button class="btn btn-secondary" onclick="clearAll()">Limpar Tudo</button>
-    <button class="btn btn-primary" onclick="generatePreview()">Visualizar Cartões</button>
-    <button class="btn btn-primary" onclick="printCards()">🖨️ Imprimir</button>
-  </div>
-</div>
-
-<div class="preview-area" id="previewArea">
-  <h2>Pré-visualização</h2>
-  <div class="preview-grid" id="previewGrid"></div>
 </div>
 
 <div class="print-area" id="printArea"></div>
 
 <script>
-  // ============ DADOS ============
   const PRESETS = [
     { type: 'Sal', name: 'Estimulante', desc: 'Gengibre & Canela', emoji: '🫚🍂', usage: 'sal', banner: false },
-    { type: 'Sal', name: 'Hidratante', desc: 'Aveia com Óleo de Coco', emoji: '🌾🥥', usage: 'sal', banner: false },
-    { type: 'Sal', name: 'Calmante', desc: 'Melissa & Maracujá', emoji: '🌿🍈', usage: 'sal', banner: false },
+    { type: 'Sal', name: 'Hidratante', desc: 'Aveia com Oleo de Coco', emoji: '🌾🥥', usage: 'sal', banner: false },
+    { type: 'Sal', name: 'Calmante', desc: 'Melissa & Maracuja', emoji: '🌿🍈', usage: 'sal', banner: false },
     { type: 'Sal', name: 'Esfoliante', desc: 'Rosas & Alecrim', emoji: '🌹🌿', usage: 'sal', banner: false },
     { type: 'Sal', name: 'Relaxante', desc: 'Lavanda & Camomila', emoji: '🪻🌼', usage: 'sal', banner: false },
     { type: 'Sal', name: 'Noturno', desc: 'Erva-Doce & Camomila', emoji: '🌱🌼', usage: 'sal', banner: true, bannerColor: '#3c2814' },
-    { type: 'Sal', name: 'Refrescante', desc: 'Hortelã & Eucalipto', emoji: '🍃🌿', usage: 'sal', banner: false },
-    { type: 'Jelly', name: 'Calmante', desc: 'Lavanda', emoji: '🪻', usage: 'jelly', banner: false },
+    { type: 'Sal', name: 'Refrescante', desc: 'Hortela & Eucalipto', emoji: '🍃🌿', usage: 'sal', banner: false },
+    { type: 'Jelly', name: 'Calmante', desc: 'Lavanda', emoji: '🪻', usage: 'jelly', banner: false }
   ];
 
   const USAGE_TEXTS = {
-    sal: 'Adicione todo o conteúdo da embalagem em 3 a 4 litros de água morna e misture até dissolver.\nMergulhe os pés e relaxe por 15 a 20 minutos.\nPara finalizar, retire os pés e seque bem.',
-    jelly: 'Adicione todo o conteúdo da embalagem em 3 a 4 litros de água morna e misture até formar o gel.\nMergulhe os pés e relaxe por 15 a 20 minutos.\nPara finalizar, adicione o desativador e misture até que o gel retorne ao estado líquido, facilitando o descarte.',
+    sal: 'Adicione todo o conteudo da embalagem em 3 a 4 litros de agua morna e misture ate dissolver.\nMergulhe os pes e relaxe por 15 a 20 minutos.\nPara finalizar, retire os pes e seque bem.',
+    jelly: 'Adicione todo o conteudo da embalagem em 3 a 4 litros de agua morna e misture ate formar o gel.\nMergulhe os pes e relaxe por 15 a 20 minutos.\nPara finalizar, adicione o desativador e misture ate que o gel retorne ao estado liquido, facilitando o descarte.'
   };
 
   let cardBatch = [];
   let currentImageDataURL = null;
+  let activePreviewSide = 'front';
 
-  // ============ INIT ============
   function init() {
-    const grid = document.getElementById('presetGrid');
-    PRESETS.forEach((p, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'preset-btn';
-      btn.innerHTML = '<span class="preset-name">' + esc(p.emoji + ' ' + p.type + ' ' + p.name) + '</span><span class="preset-desc">' + esc(p.desc) + '</span>';
-      btn.addEventListener('click', () => loadPreset(i));
-      grid.appendChild(btn);
-    });
+    renderPresets();
+    bindFormEvents();
+    bindPreviewTabs();
+    resetForm(false);
+    renderBatch();
+    renderDraftPreview();
+    updatePrintButton();
+  }
 
-    const today = new Date();
-    document.getElementById('fabricDate').value = dateToInput(today);
-    const nextYear = new Date(today);
-    nextYear.setFullYear(nextYear.getFullYear() + 1);
-    document.getElementById('validDate').value = dateToInput(nextYear);
-    document.getElementById('usageText').value = USAGE_TEXTS.sal;
+  function renderPresets() {
+    const grid = document.getElementById('presetGrid');
+    grid.innerHTML = '';
+
+    PRESETS.forEach((preset, index) => {
+      const button = document.createElement('button');
+      button.className = 'preset-btn';
+      button.type = 'button';
+      button.innerHTML =
+        '<span class="preset-name">' + esc(preset.name) + '</span>' +
+        '<span class="preset-desc">' + esc(preset.type + ' • ' + preset.desc) + '</span>';
+      button.addEventListener('click', () => loadPreset(index));
+      grid.appendChild(button);
+    });
+  }
+
+  function bindFormEvents() {
+    ['productName', 'productDesc', 'fabricDate', 'validDate', 'usageText', 'productEmoji', 'qty', 'hasBanner', 'bannerColor']
+      .forEach(id => {
+        document.getElementById(id).addEventListener('input', renderDraftPreview);
+        document.getElementById(id).addEventListener('change', renderDraftPreview);
+      });
 
     document.getElementById('productType').addEventListener('change', function() {
       if (this.value !== 'Outro') {
-        document.getElementById('usageText').value = USAGE_TEXTS[this.value === 'Jelly' ? 'jelly' : 'sal'];
+        document.getElementById('usageText').value = defaultUsageForType(this.value);
       }
+      renderDraftPreview();
     });
 
-    document.getElementById('productImage').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-          currentImageDataURL = ev.target.result;
-          const preview = document.getElementById('imagePreview');
-          preview.src = currentImageDataURL;
-          preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
+    document.getElementById('productImage').addEventListener('change', handleImageChange);
+  }
+
+  function bindPreviewTabs() {
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', () => setPreviewSide(button.dataset.side));
     });
   }
 
-  function dateToInput(d) { return d.toISOString().split('T')[0]; }
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    if (!file) {
+      currentImageDataURL = null;
+      syncImagePreview();
+      renderDraftPreview();
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(loadEvent) {
+      currentImageDataURL = loadEvent.target.result;
+      syncImagePreview();
+      renderDraftPreview();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function resetForm(shouldRender = true) {
+    const today = new Date();
+    const nextYear = new Date(today);
+    nextYear.setFullYear(nextYear.getFullYear() + 1);
+
+    document.getElementById('productType').value = 'Sal';
+    document.getElementById('qty').value = 1;
+    document.getElementById('productName').value = '';
+    document.getElementById('productDesc').value = '';
+    document.getElementById('fabricDate').value = dateToInput(today);
+    document.getElementById('validDate').value = dateToInput(nextYear);
+    document.getElementById('usageText').value = USAGE_TEXTS.sal;
+    document.getElementById('productEmoji').value = '';
+    document.getElementById('hasBanner').checked = false;
+    document.getElementById('bannerColor').value = '#3c2814';
+    document.getElementById('productImage').value = '';
+    currentImageDataURL = null;
+    syncImagePreview();
+
+    if (shouldRender) renderDraftPreview();
+  }
+
+  function syncImagePreview() {
+    const preview = document.getElementById('imagePreview');
+    if (currentImageDataURL) {
+      preview.src = currentImageDataURL;
+      preview.style.display = 'block';
+      return;
+    }
+    preview.removeAttribute('src');
+    preview.style.display = 'none';
+  }
+
+  function dateToInput(date) {
+    return date.toISOString().split('T')[0];
+  }
 
   function formatDate(dateStr) {
     if (!dateStr) return '__/__/__';
-    const p = dateStr.split('-');
-    return p[2] + '/ ' + p[1] + '/ ' + p[0].slice(2);
+    const parts = dateStr.split('-');
+    return parts[2] + '/' + parts[1] + '/' + parts[0].slice(2);
   }
 
-  function loadPreset(i) {
-    const p = PRESETS[i];
-    document.getElementById('productType').value = p.type;
-    document.getElementById('productName').value = p.name;
-    document.getElementById('productDesc').value = p.desc;
-    document.getElementById('productEmoji').value = p.emoji;
-    document.getElementById('usageText').value = USAGE_TEXTS[p.usage];
-    document.getElementById('hasBanner').checked = !!p.banner;
-    if (p.bannerColor) document.getElementById('bannerColor').value = p.bannerColor;
-    currentImageDataURL = null;
-    document.getElementById('productImage').value = '';
-    document.getElementById('imagePreview').style.display = 'none';
+  function defaultUsageForType(type) {
+    return type === 'Jelly' ? USAGE_TEXTS.jelly : USAGE_TEXTS.sal;
   }
 
-  // ============ LOTE ============
-  function addCard() {
+  function getFormCardData(previewMode) {
     const type = document.getElementById('productType').value;
     const name = document.getElementById('productName').value.trim();
     const desc = document.getElementById('productDesc').value.trim();
@@ -775,52 +1252,156 @@
     const fabricDate = document.getElementById('fabricDate').value;
     const validDate = document.getElementById('validDate').value;
     const usageText = document.getElementById('usageText').value.trim();
-    const qty = parseInt(document.getElementById('qty').value) || 1;
+    const qty = parseInt(document.getElementById('qty').value, 10) || 1;
     const hasBanner = document.getElementById('hasBanner').checked;
     const bannerColor = document.getElementById('bannerColor').value;
-    const imageDataURL = currentImageDataURL;
 
-    if (!name) { alert('Preencha o nome do produto.'); return; }
-    cardBatch.push({ type, name, desc, emoji, fabricDate, validDate, usageText, qty, hasBanner, bannerColor, imageDataURL });
-    renderBatch();
-
-    currentImageDataURL = null;
-    document.getElementById('productImage').value = '';
-    document.getElementById('imagePreview').style.display = 'none';
+    return {
+      type,
+      name: name || (previewMode ? 'Nome do Produto' : ''),
+      desc: desc || (previewMode ? 'Ingredientes' : ''),
+      emoji,
+      fabricDate,
+      validDate,
+      usageText: usageText || (previewMode ? defaultUsageForType(type) : ''),
+      qty,
+      hasBanner,
+      bannerColor,
+      imageDataURL: currentImageDataURL
+    };
   }
 
-  function removeCard(i) { cardBatch.splice(i, 1); renderBatch(); }
+  function loadPreset(index) {
+    const preset = PRESETS[index];
+    applyCardToForm({
+      type: preset.type,
+      name: preset.name,
+      desc: preset.desc,
+      emoji: preset.emoji,
+      fabricDate: document.getElementById('fabricDate').value || dateToInput(new Date()),
+      validDate: document.getElementById('validDate').value || dateToInput(new Date()),
+      usageText: defaultUsageForType(preset.type),
+      qty: 1,
+      hasBanner: !!preset.banner,
+      bannerColor: preset.bannerColor || '#3c2814',
+      imageDataURL: null
+    });
+  }
+
+  function applyCardToForm(card) {
+    document.getElementById('productType').value = card.type || 'Sal';
+    document.getElementById('qty').value = card.qty || 1;
+    document.getElementById('productName').value = card.name || '';
+    document.getElementById('productDesc').value = card.desc || '';
+    document.getElementById('fabricDate').value = card.fabricDate || dateToInput(new Date());
+    document.getElementById('validDate').value = card.validDate || dateToInput(new Date());
+    document.getElementById('usageText').value = card.usageText || defaultUsageForType(card.type || 'Sal');
+    document.getElementById('productEmoji').value = card.emoji || '';
+    document.getElementById('hasBanner').checked = !!card.hasBanner;
+    document.getElementById('bannerColor').value = card.bannerColor || '#3c2814';
+    document.getElementById('productImage').value = '';
+    currentImageDataURL = card.imageDataURL || null;
+    syncImagePreview();
+    renderDraftPreview();
+  }
+
+  function addCard() {
+    const card = getFormCardData(false);
+    if (!card.name) {
+      alert('Preencha o nome do produto antes de salvar.');
+      return;
+    }
+
+    cardBatch.push({ ...card });
+    renderBatch();
+    renderDraftPreview();
+    updatePrintButton();
+  }
+
+  function loadBatchCard(index) {
+    applyCardToForm(cardBatch[index]);
+  }
+
+  function removeCard(index) {
+    cardBatch.splice(index, 1);
+    renderBatch();
+    updatePrintButton();
+  }
 
   function clearAll() {
     cardBatch = [];
     renderBatch();
-    document.getElementById('previewGrid').innerHTML = '';
+    updatePrintButton();
   }
 
   function renderBatch() {
-    const el = document.getElementById('addedCards');
+    const container = document.getElementById('addedCards');
+    const countLabel = document.getElementById('productCountLabel');
+    const countBadge = document.getElementById('productCountBadge');
+
+    countLabel.textContent = 'Produtos (' + cardBatch.length + ')';
+    countBadge.textContent = String(cardBatch.length);
+
     if (!cardBatch.length) {
-      el.innerHTML = '<div class="empty-state">Nenhum cartão adicionado ainda</div>';
+      container.innerHTML = '<div class="empty-state">Nenhum produto cadastrado ainda.</div>';
       return;
     }
-    el.innerHTML = cardBatch.map((c, i) =>
-      '<div class="added-card-item"><div class="info">' +
-      '<strong>' + esc(c.type + ' ' + c.name) + '</strong> — ' + esc(c.desc) +
-      (c.hasBanner ? ' <small style="color:#8a6d4b">[banner]</small>' : '') +
-      (c.imageDataURL ? ' <small style="color:#2e7d32">[imagem]</small>' : '') +
-      '<br><small>Fab: ' + esc(formatDate(c.fabricDate)) + ' | Val: ' + esc(formatDate(c.validDate)) + ' | Qtd: ' + c.qty + '</small>' +
-      '</div><button class="btn-remove" onclick="removeCard(' + i + ')">Remover</button></div>'
-    ).join('');
+
+    container.innerHTML = cardBatch.map((card, index) => {
+      return '<article class="product-item">' +
+        '<div class="product-item-header">' +
+        '<div>' +
+        '<div class="product-item-title">' + esc(card.name) + '</div>' +
+        '<div class="product-item-subtitle">' + esc(card.type + ' • ' + (card.desc || 'Sem subtitulo')) + '</div>' +
+        '</div>' +
+        '<div class="qty-chip">Qtd ' + card.qty + '</div>' +
+        '</div>' +
+        '<div class="product-item-meta">Fab: ' + esc(formatDate(card.fabricDate)) + ' • Val: ' + esc(formatDate(card.validDate)) + '</div>' +
+        '<div class="product-item-actions">' +
+        '<button class="btn-inline" type="button" onclick="loadBatchCard(' + index + ')">Usar no editor</button>' +
+        '<button class="btn-inline danger" type="button" onclick="removeCard(' + index + ')">Remover</button>' +
+        '</div>' +
+        '</article>';
+    }).join('');
   }
 
-  // ============ ESCAPE ============
+  function updatePrintButton() {
+    const button = document.getElementById('printButton');
+    button.disabled = !cardBatch.length;
+    button.style.opacity = cardBatch.length ? '1' : '0.45';
+    button.style.cursor = cardBatch.length ? 'pointer' : 'not-allowed';
+  }
+
+  function setPreviewSide(side) {
+    activePreviewSide = side;
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.classList.toggle('active', button.dataset.side === side);
+    });
+    renderDraftPreview();
+  }
+
+  function renderDraftPreview() {
+    const preview = document.getElementById('singlePreview');
+    const status = document.getElementById('previewStatus');
+    const draft = getFormCardData(true);
+    const cardHtml = activePreviewSide === 'front'
+      ? buildFront(draft, { showPlaceholderIllustration: true })
+      : buildBack(draft);
+
+    preview.innerHTML = '<div class="preview-card-shell">' + cardHtml + '</div>';
+    status.textContent = (draft.name || 'Nome do Produto') + ' • ' + (activePreviewSide === 'front' ? 'Frente' : 'Verso') + ' • Quantidade ' + draft.qty;
+  }
+
+  function generatePreview() {
+    renderDraftPreview();
+  }
+
   function esc(str) {
-    const d = document.createElement('div');
-    d.textContent = str || '';
-    return d.innerHTML;
+    const element = document.createElement('div');
+    element.textContent = str || '';
+    return element.innerHTML;
   }
 
-  // ============ ESTRUTURA DO CARTÃO ============
   function cornerSVG() {
     return '<svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">' +
       '<path d="M3 27 C3 14, 6 8, 12 5 C16 3, 22 3, 27 3" stroke="#b8963e" stroke-width="1.8" fill="none"/>' +
@@ -837,144 +1418,131 @@
       '<div class="card-border-outer"></div>' +
       '<div class="card-border-inner"></div>' +
       '<div class="hole"></div>' +
+      '<div class="pin pin-tl"></div>' +
+      '<div class="pin pin-tr"></div>' +
+      '<div class="pin pin-bl"></div>' +
+      '<div class="pin pin-br"></div>' +
       '<div class="corner corner-tl">' + cornerSVG() + '</div>' +
       '<div class="corner corner-tr">' + cornerSVG() + '</div>' +
       '<div class="corner corner-bl">' + cornerSVG() + '</div>' +
       '<div class="corner corner-br">' + cornerSVG() + '</div>';
   }
 
-  function ruledLines(count, color) {
-    let html = '<div class="ruled-lines">';
-    for (let i = 0; i < count; i++) {
-      html += '<div class="ruled-line"' + (color ? ' style="border-color:' + color + '"' : '') + '></div>';
-    }
-    return html + '</div>';
+  function topOrnament() {
+    return '<div class="top-ornament">' +
+      '<span class="ornament-line"></span>' +
+      '<span class="ornament-dots">•••••</span>' +
+      '<span class="ornament-line"></span>' +
+      '</div>';
   }
 
-  function descLines(count) {
-    let html = '<div class="desc-lines">';
-    for (let i = 0; i < count; i++) html += '<div class="desc-line"></div>';
-    return html + '</div>';
+  function kickerLabel(card) {
+    return card.type === 'Jelly' ? 'Jelly Artesanal' : 'Produto Natural';
   }
 
-  function illustration(c) {
-    if (c.imageDataURL) return '<img src="' + c.imageDataURL + '" alt="ilustração">';
-    if (c.emoji) return '<span class="emoji-illust">' + esc(c.emoji) + '</span>';
+  function typeNote(card) {
+    if (card.type === 'Sal') return 'Escalda-pes artesanal';
+    if (card.type === 'Jelly') return 'Textura sensorial';
+    return 'Feito a mao';
+  }
+
+  function illustration(card, options) {
+    if (card.imageDataURL) return '<img src="' + card.imageDataURL + '" alt="Ilustracao do produto">';
+    if (card.emoji) return '<span class="emoji-illust">' + esc(card.emoji) + '</span>';
+    if (options && options.showPlaceholderIllustration) return '<div class="image-placeholder">Imagem</div>';
     return '';
   }
 
-  // ============ FRENTE ============
-  function buildFront(c) {
-    let html = '<div class="card card-front">' + cardShell();
+  function buildFront(card, options) {
+    const titleStyle = card.hasBanner
+      ? ' style="background:linear-gradient(180deg, ' + esc(card.bannerColor || '#3c2814') + ', rgba(40,24,12,0.9));"'
+      : '';
 
-    if (c.hasBanner) {
-      const bg = esc(c.bannerColor || '#3c2814');
-      html += '<div class="banner-overlay" style="background:' + bg + 'e0;">' +
-        '<div class="product-type-name">' + esc(c.type) + '<br>' + esc(c.name) + '</div>' +
-        ruledLines(2, 'rgba(245,237,216,0.35)') +
-        '<div class="product-desc">' + esc(c.desc) + '</div>' +
-        '</div>' +
-        '<div class="card-content" style="padding-top:85px;">' +
-        descLines(2) +
-        '<div class="illustration-area">' + illustration(c) + '</div>' +
-        '</div>';
-    } else {
-      html += '<div class="card-content">' +
-        '<div class="product-type-name">' + esc(c.type) + '<br>' + esc(c.name) + '</div>' +
-        ruledLines(2) +
-        '<div class="product-desc">' + esc(c.desc) + '</div>' +
-        descLines(2) +
-        '<div class="illustration-area">' + illustration(c) + '</div>' +
-        '</div>';
-    }
+    let html = '<div class="card card-front' + (card.hasBanner ? ' bannered' : '') + '">' + cardShell();
+    html += '<div class="card-content">' +
+      topOrnament() +
+      '<div class="title-block"' + titleStyle + '>' +
+      '<div class="product-kicker">' + esc(kickerLabel(card)) + '</div>' +
+      '<div class="title-divider"></div>' +
+      '<div class="product-name-main">' + esc(card.name) + '</div>' +
+      '<div class="product-type-note">' + esc(typeNote(card)) + '</div>' +
+      '<div class="product-desc">' + esc(card.desc || card.type) + '</div>' +
+      '</div>' +
+      '<div class="hero-divider"></div>' +
+      '<div class="illustration-frame"><div class="illustration-area">' + illustration(card, options || {}) + '</div></div>' +
+      '<div class="seal-ribbon">100% Natural</div>' +
+      '</div>';
 
     html += '<div class="dates">' +
-      '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(c.fabricDate)) + '</span></div>' +
-      '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(c.validDate)) + '</span></div>' +
+      '<div class="date-row"><span class="date-label">Fabricacao</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
+      '<div class="date-row"><span class="date-label">Validade</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
       '</div></div>';
 
     return html;
   }
 
-  // ============ VERSO ============
-  function buildBack(c) {
-    const txt = esc(c.usageText).replace(/\n/g, '<br>');
+  function buildBack(card) {
+    const text = esc(card.usageText).replace(/\n/g, '<br>');
     return '<div class="card card-back">' + cardShell() +
       '<div class="card-content">' +
-      '<div class="uso-title">Modo de uso:</div>' +
-      '<div class="uso-text">' + txt + '</div>' +
+      topOrnament() +
+      '<div class="uso-title">Modo de uso</div>' +
+      '<div class="usage-panel"><div class="uso-text">' + text + '</div></div>' +
       '</div></div>';
   }
 
-  // ============ PREVIEW ============
-  function generatePreview() {
-    const grid = document.getElementById('previewGrid');
-    grid.innerHTML = '';
+  function printCards() {
     if (!cardBatch.length) {
-      grid.innerHTML = '<div class="empty-state">Adicione cartões ao lote primeiro</div>';
+      alert('Adicione ao menos um produto ao lote antes de imprimir.');
       return;
     }
-
-    cardBatch.forEach(c => {
-      for (let i = 0; i < c.qty; i++) {
-        const pair = document.createElement('div');
-        pair.className = 'preview-pair';
-        pair.innerHTML =
-          '<div><div>' + buildFront(c) + '</div><div class="preview-label">Frente</div></div>' +
-          '<div><div>' + buildBack(c) + '</div><div class="preview-label">Verso</div></div>';
-        grid.appendChild(pair);
-      }
-    });
-
-    document.getElementById('previewArea').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // ============ IMPRESSÃO ============
-  function printCards() {
-    if (!cardBatch.length) { alert('Adicione cartões ao lote primeiro.'); return; }
 
     const printArea = document.getElementById('printArea');
     printArea.innerHTML = '';
 
-    const all = [];
-    cardBatch.forEach(c => { for (let i = 0; i < c.qty; i++) all.push(c); });
-
-    const PER_PAGE = 9;
-    const COLS = 3;
-    for (let i = 0; i < all.length; i += PER_PAGE) {
-      const slice = all.slice(i, i + PER_PAGE);
-
-      // Página de frente
-      const fr = document.createElement('div');
-      fr.className = 'card-page';
-      fr.style.position = 'relative';
-      slice.forEach(c => { fr.innerHTML += buildFront(c); });
-      // Preencher células vazias para manter o grid
-      for (let e = slice.length; e < PER_PAGE; e++) {
-        fr.innerHTML += '<div class="card-placeholder"></div>';
+    const allCards = [];
+    cardBatch.forEach(card => {
+      for (let index = 0; index < card.qty; index++) {
+        allCards.push(card);
       }
-      printArea.appendChild(fr);
+    });
 
-      // Página de verso (espelhada horizontalmente por linha)
-      const bk = document.createElement('div');
-      bk.className = 'card-page';
-      bk.style.position = 'relative';
-      for (let r = 0; r < PER_PAGE; r += COLS) {
-        const row = slice.slice(r, r + COLS);
-        const empties = COLS - row.length;
-        const reversed = [...row].reverse();
-        // Placeholders antes dos cartões invertidos (para alinhar à direita)
-        for (let e = 0; e < empties; e++) {
-          bk.innerHTML += '<div class="card-placeholder"></div>';
+    const perPage = 9;
+    const cols = 3;
+
+    for (let index = 0; index < allCards.length; index += perPage) {
+      const slice = allCards.slice(index, index + perPage);
+
+      const frontPage = document.createElement('div');
+      frontPage.className = 'card-page';
+      frontPage.style.position = 'relative';
+      slice.forEach(card => { frontPage.innerHTML += buildFront(card); });
+      for (let fill = slice.length; fill < perPage; fill++) {
+        frontPage.innerHTML += '<div class="card-placeholder"></div>';
+      }
+      printArea.appendChild(frontPage);
+
+      const backPage = document.createElement('div');
+      backPage.className = 'card-page';
+      backPage.style.position = 'relative';
+
+      for (let rowStart = 0; rowStart < perPage; rowStart += cols) {
+        const row = slice.slice(rowStart, rowStart + cols);
+        const empties = cols - row.length;
+        const reversedRow = [...row].reverse();
+
+        for (let fill = 0; fill < empties; fill++) {
+          backPage.innerHTML += '<div class="card-placeholder"></div>';
         }
-        reversed.forEach(c => { bk.innerHTML += buildBack(c); });
+        reversedRow.forEach(card => { backPage.innerHTML += buildBack(card); });
       }
-      // Preencher linhas vazias restantes
-      const totalBack = bk.children.length;
-      for (let e = totalBack; e < PER_PAGE; e++) {
-        bk.innerHTML += '<div class="card-placeholder"></div>';
+
+      const totalChildren = backPage.children.length;
+      for (let fill = totalChildren; fill < perPage; fill++) {
+        backPage.innerHTML += '<div class="card-placeholder"></div>';
       }
-      printArea.appendChild(bk);
+
+      printArea.appendChild(backPage);
     }
 
     setTimeout(() => window.print(), 300);
