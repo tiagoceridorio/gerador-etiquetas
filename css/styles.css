@@ -698,6 +698,9 @@ textarea {
   width: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-front .illustration-area img {
@@ -715,8 +718,11 @@ textarea {
 }
 
 .image-placeholder {
-  width: 85%;
-  height: 80%;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
   border: 1px dashed rgba(140, 101, 66, 0.35);
   border-radius: 8px;
   display: flex;
