@@ -52,7 +52,20 @@ function printCards() {
     printArea.appendChild(backPage);
   }
 
+  // Tornar visível temporariamente para que fitBackCards consiga medir dimensões
+  printArea.style.display = 'block';
+  printArea.style.position = 'absolute';
+  printArea.style.left = '-9999px';
+  printArea.style.visibility = 'hidden';
+
   fitBackCards(printArea);
   fitIllustrationImages(printArea);
+
+  // Restaurar — o @media print cuida da exibição
+  printArea.style.display = '';
+  printArea.style.position = '';
+  printArea.style.left = '';
+  printArea.style.visibility = '';
+
   setTimeout(function() { window.print(); }, 300);
 }
