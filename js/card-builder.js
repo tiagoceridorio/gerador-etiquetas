@@ -83,32 +83,22 @@ function buildFront(card, options) {
     if (isPartial) {
       bannerStyle += 'top:' + bt + '%;bottom:auto;height:' + bh + '%;width:' + bw + '%;';
       if (bw < 100) bannerStyle += 'left:50%;transform:translateX(-50%);';
-      html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
-        typeName(card) +
-        ruledLines(1) +
-        '<div class="product-desc">' + styledDesc(card.desc) + '</div>' +
-        '</div>';
-
-      var contentTop = bt + bh;
-      html += '<div class="card-content" style="position:absolute;top:' + contentTop + '%;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;padding:4px 8px 8px;">' +
-        '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
-        '<div class="dates">' +
-          '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
-          '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
-        '</div>' +
-        '</div>';
-    } else {
-      html += '<div class="' + bannerClass + '" style="' + bannerStyle + '">' +
-        typeName(card) +
-        ruledLines(1) +
-        '<div class="product-desc">' + styledDesc(card.desc) + '</div>' +
-        '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
-        '<div class="dates">' +
-          '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
-          '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
-        '</div>' +
-        '</div>';
     }
+
+    // Banner é apenas camada visual (sem conteúdo dentro)
+    html += '<div class="' + bannerClass + '" style="' + bannerStyle + '"></div>';
+
+    // Conteúdo fica independente do banner
+    html += '<div class="banner-content" style="' + cssVars + '">' +
+      typeName(card) +
+      ruledLines(1) +
+      '<div class="product-desc">' + styledDesc(card.desc) + '</div>' +
+      '<div class="illustration-area">' + illustration(card, options || {}) + '</div>' +
+      '<div class="dates">' +
+        '<div class="date-row"><span class="date-label">Fabricado:</span><span class="date-value">' + esc(formatDate(card.fabricDate)) + '</span></div>' +
+        '<div class="date-row"><span class="date-label">Validade:</span><span class="date-value">' + esc(formatDate(card.validDate)) + '</span></div>' +
+      '</div>' +
+      '</div>';
   } else {
     html += '<div class="card-content">' +
       typeName(card) +
