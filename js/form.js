@@ -24,6 +24,7 @@ function resetForm(shouldRender) {
   document.getElementById('productEmoji').value = '';
   document.getElementById('hasBanner').checked = false;
   document.getElementById('bannerColor').value = '#3c2814';
+  document.getElementById('bannerFontColor').value = '#f5edd8';
   document.getElementById('bannerWidth').value = 100;
   document.getElementById('bannerHeight').value = 100;
   document.getElementById('bannerTopSpace').value = 0;
@@ -114,6 +115,7 @@ function getFormCardData(previewMode) {
   var qty = parseInt(document.getElementById('qty').value, 10) || 1;
   var hasBanner = document.getElementById('hasBanner').checked;
   var bannerColor = document.getElementById('bannerColor').value;
+  var bannerFontColor = document.getElementById('bannerFontColor').value;
   var bannerWidth = parseInt(document.getElementById('bannerWidth').value, 10) || 100;
   var bannerHeight = parseInt(document.getElementById('bannerHeight').value, 10) || 100;
   var bannerTopSpace = parseInt(document.getElementById('bannerTopSpace').value, 10) || 0;
@@ -130,6 +132,7 @@ function getFormCardData(previewMode) {
     qty: qty,
     hasBanner: hasBanner,
     bannerColor: bannerColor,
+    bannerFontColor: bannerFontColor,
     bannerWidth: bannerWidth,
     bannerHeight: bannerHeight,
     bannerTopSpace: bannerTopSpace,
@@ -152,6 +155,7 @@ function loadPreset(index) {
     qty: 1,
     hasBanner: !!preset.banner,
     bannerColor: preset.bannerColor || '#3c2814',
+    bannerFontColor: preset.bannerFontColor || '#f5edd8',
     bannerWidth: preset.bannerWidth || 100,
     bannerHeight: preset.bannerHeight || 100,
     bannerTopSpace: preset.bannerTopSpace || 0,
@@ -172,6 +176,7 @@ function applyCardToForm(card) {
   document.getElementById('productEmoji').value = card.emoji || '';
   document.getElementById('hasBanner').checked = !!card.hasBanner;
   document.getElementById('bannerColor').value = card.bannerColor || '#3c2814';
+  document.getElementById('bannerFontColor').value = card.bannerFontColor || '#f5edd8';
   document.getElementById('bannerWidth').value = card.bannerWidth || 100;
   document.getElementById('bannerHeight').value = card.bannerHeight || 100;
   document.getElementById('bannerTopSpace').value = card.bannerTopSpace || 0;

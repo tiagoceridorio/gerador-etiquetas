@@ -26,7 +26,7 @@ function renderPresets() {
 }
 
 function bindFormEvents() {
-  ['productName', 'productDesc', 'fabricDate', 'validDate', 'usageText', 'productEmoji', 'qty', 'hasBanner', 'bannerColor', 'bannerWidth', 'bannerHeight', 'bannerTopSpace', 'bannerRepeat']
+  ['productName', 'productDesc', 'fabricDate', 'validDate', 'usageText', 'productEmoji', 'qty', 'hasBanner', 'bannerColor', 'bannerFontColor', 'bannerWidth', 'bannerHeight', 'bannerTopSpace', 'bannerRepeat']
     .forEach(function(id) {
       document.getElementById(id).addEventListener('input', renderDraftPreview);
       document.getElementById(id).addEventListener('change', renderDraftPreview);

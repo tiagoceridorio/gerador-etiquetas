@@ -51,10 +51,11 @@ function buildFront(card, options) {
 
   if (card.hasBanner) {
     var bg = esc(card.bannerColor || '#3c2814');
-    var bannerStyle = 'background:' + bg + 'e0;';
+    var fc = esc(card.bannerFontColor || '#f5edd8');
+    var bannerStyle = '--banner-font:' + fc + ';background:' + bg + 'e0;';
     var bannerClass = 'banner-overlay';
     if (card.bannerImageDataURL) {
-      bannerStyle = 'background-image:url(' + card.bannerImageDataURL + ');';
+      bannerStyle = '--banner-font:' + fc + ';background-image:url(' + card.bannerImageDataURL + ');';
       var repeat = card.bannerRepeat || 'cover';
       if (repeat === 'repeat') {
         bannerClass = 'banner-overlay has-image bg-repeat';
