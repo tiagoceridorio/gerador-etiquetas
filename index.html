@@ -701,17 +701,16 @@
     }
 
     .card-front .illustration-area {
-      flex: 1;
+      flex: 1 1 0;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px 12px;
-      min-height: 0;
+      position: relative;
       overflow: hidden;
     }
 
     .card-front .illustration-area img {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
@@ -835,19 +834,17 @@
     }
 
     .banner-overlay .illustration-area {
-      flex: 1;
+      flex: 1 1 0;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px 12px;
-      min-height: 0;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
       z-index: 2;
     }
 
     .banner-overlay .illustration-area img {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
@@ -891,6 +888,11 @@
       margin-left: 5px;
       letter-spacing: 0.8px;
       white-space: nowrap;
+    }
+
+    .banner-overlay.has-image {
+      background-size: auto;
+      background-repeat: repeat;
     }
 
     .banner-overlay.has-image::before {
@@ -1255,6 +1257,44 @@
     });
   }
 
+  function trimImage(dataURL, callback) {
+    var img = new Image();
+    img.onload = function() {
+      var c = document.createElement('canvas');
+      c.width = img.width;
+      c.height = img.height;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      var data = ctx.getImageData(0, 0, c.width, c.height).data;
+      var w = c.width, h = c.height;
+      var top = h, left = w, right = 0, bottom = 0;
+      for (var y = 0; y < h; y++) {
+        for (var x = 0; x < w; x++) {
+          var i = (y * w + x) * 4;
+          var r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+          if (a < 10) continue;
+          if (r > 245 && g > 245 && b > 245) continue;
+          if (y < top) top = y;
+          if (y > bottom) bottom = y;
+          if (x < left) left = x;
+          if (x > right) right = x;
+        }
+      }
+      if (right <= left || bottom <= top) { callback(dataURL); return; }
+      var pad = 4;
+      top = Math.max(0, top - pad);
+      left = Math.max(0, left - pad);
+      right = Math.min(w - 1, right + pad);
+      bottom = Math.min(h - 1, bottom + pad);
+      var cw = right - left + 1, ch = bottom - top + 1;
+      var out = document.createElement('canvas');
+      out.width = cw; out.height = ch;
+      out.getContext('2d').drawImage(c, left, top, cw, ch, 0, 0, cw, ch);
+      callback(out.toDataURL('image/png'));
+    };
+    img.src = dataURL;
+  }
+
   function handleImageChange(event) {
     const file = event.target.files[0];
     if (!file) {
@@ -1266,9 +1306,11 @@
 
     const reader = new FileReader();
     reader.onload = function(loadEvent) {
-      currentImageDataURL = loadEvent.target.result;
-      syncImagePreview();
-      renderDraftPreview();
+      trimImage(loadEvent.target.result, function(trimmed) {
+        currentImageDataURL = trimmed;
+        syncImagePreview();
+        renderDraftPreview();
+      });
     };
     reader.readAsDataURL(file);
   }
@@ -1484,6 +1526,7 @@
       '</div>';
     status.textContent = (draft.name || 'Nome do Produto') + ' • Quantidade ' + draft.qty;
     fitBackCards(preview);
+    fitIllustrationImages(preview);
   }
 
   function generatePreview() {
@@ -1589,8 +1632,28 @@
       '</div></div>';
   }
 
+  function fitIllustrationImages(container) {
+    (container || document).querySelectorAll('.illustration-area img').forEach(function(img) {
+      var area = img.closest('.illustration-area');
+      if (!area) return;
+      var doFit = function() {
+        var areaW = area.clientWidth;
+        var areaH = area.clientHeight;
+        if (!areaW || !areaH) return;
+        var natW = img.naturalWidth || 1;
+        var natH = img.naturalHeight || 1;
+        var scale = Math.min(areaW / natW, areaH / natH);
+        img.style.width = Math.round(natW * scale) + 'px';
+        img.style.height = Math.round(natH * scale) + 'px';
+      };
+      if (img.complete && img.naturalWidth) doFit();
+      else img.onload = doFit;
+    });
+  }
+
   function fitBackCards(root) {
     root = root || document;
+
     root.querySelectorAll('.card-back').forEach(function(card) {
       var content = card.querySelector('.card-content');
       var title = card.querySelector('.uso-title');
@@ -1701,6 +1764,7 @@
     }
 
     fitBackCards(printArea);
+    fitIllustrationImages(printArea);
     setTimeout(() => window.print(), 300);
   }
 
