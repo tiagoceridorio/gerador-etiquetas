@@ -493,11 +493,12 @@
     }
 
     .single-preview {
-      width: min(100%, 520px);
+      width: 100%;
       min-height: 430px;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 28px;
       border-radius: 24px;
       background:
         radial-gradient(circle at top, rgba(255, 253, 248, 0.96), rgba(248, 240, 227, 0.82)),
@@ -505,10 +506,26 @@
       border: 1px solid rgba(214, 197, 175, 0.8);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
       padding: 22px;
+      flex-wrap: wrap;
+    }
+
+    .preview-card-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-card-column .preview-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
     }
 
     .preview-card-shell {
-      transform: scale(1.22);
+      transform: scale(1.1);
       transform-origin: center center;
     }
 
@@ -1023,10 +1040,7 @@
             <span id="previewStatus">Edite os campos e acompanhe o resultado imediatamente.</span>
           </div>
 
-          <div class="preview-tabs" role="tablist" aria-label="Selecionar lado do cartao">
-            <button class="tab-btn active" type="button" data-side="front">Frente</button>
-            <button class="tab-btn" type="button" data-side="back">Verso</button>
-          </div>
+
         </div>
 
         <div class="canvas-stage">
@@ -1316,12 +1330,19 @@
     const preview = document.getElementById('singlePreview');
     const status = document.getElementById('previewStatus');
     const draft = getFormCardData(true);
-    const cardHtml = activePreviewSide === 'front'
-      ? buildFront(draft, { showPlaceholderIllustration: true })
-      : buildBack(draft);
+    const frontHtml = buildFront(draft, { showPlaceholderIllustration: true });
+    const backHtml = buildBack(draft);
 
-    preview.innerHTML = '<div class="preview-card-shell">' + cardHtml + '</div>';
-    status.textContent = (draft.name || 'Nome do Produto') + ' • ' + (activePreviewSide === 'front' ? 'Frente' : 'Verso') + ' • Quantidade ' + draft.qty;
+    preview.innerHTML =
+      '<div class="preview-card-column">' +
+        '<span class="preview-label">Frente</span>' +
+        '<div class="preview-card-shell">' + frontHtml + '</div>' +
+      '</div>' +
+      '<div class="preview-card-column">' +
+        '<span class="preview-label">Verso</span>' +
+        '<div class="preview-card-shell">' + backHtml + '</div>' +
+      '</div>';
+    status.textContent = (draft.name || 'Nome do Produto') + ' • Quantidade ' + draft.qty;
   }
 
   function generatePreview() {
