@@ -55,17 +55,19 @@ function buildFront(card, options) {
 
   if (card.hasBanner) {
     var bg = esc(card.bannerColor || '#3c2814');
-    var fc = esc(card.bannerFontColor || '#f5edd8');
+    var cNome = esc(card.colorNome || card.bannerFontColor || '#f5edd8');
+    var cDesc = esc(card.colorDesc || card.bannerFontColor || '#f5edd8');
+    var cDatas = esc(card.colorDatas || card.bannerFontColor || '#f5edd8');
     var opacity = card.bannerOpacity != null ? card.bannerOpacity : 88;
     var alpha = (opacity / 100).toFixed(2);
     var r = parseInt(bg.slice(1, 3), 16);
     var g = parseInt(bg.slice(3, 5), 16);
     var b = parseInt(bg.slice(5, 7), 16);
-    var cssVars = '--banner-font:' + fc + ';';
-    var bannerStyle = cssVars + 'background:rgba(' + r + ',' + g + ',' + b + ',' + alpha + ');';
+    var cssVars = '--color-nome:' + cNome + ';--color-desc:' + cDesc + ';--color-datas:' + cDatas + ';';
+    var bannerStyle = 'background:rgba(' + r + ',' + g + ',' + b + ',' + alpha + ');';
     var bannerClass = 'banner-overlay';
     if (card.bannerImageDataURL) {
-      bannerStyle = cssVars + '--banner-overlay-bg:rgba(' + r + ',' + g + ',' + b + ',' + alpha + ');background-image:url(' + card.bannerImageDataURL + ');';
+      bannerStyle = '--banner-overlay-bg:rgba(' + r + ',' + g + ',' + b + ',' + alpha + ');background-image:url(' + card.bannerImageDataURL + ');';
       var repeat = card.bannerRepeat || 'cover';
       if (repeat === 'repeat') {
         bannerClass = 'banner-overlay has-image bg-repeat';

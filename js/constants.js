@@ -4,7 +4,7 @@ const PRESETS = [
   { type: 'Sal', name: 'Calmante', desc: 'Melissa & Maracuja', emoji: '🌿🍈', usage: 'sal', banner: false },
   { type: 'Sal', name: 'Esfoliante', desc: 'Rosas & Alecrim', emoji: '🌹🌿', usage: 'sal', banner: false },
   { type: 'Sal', name: 'Relaxante', desc: 'Lavanda & Camomila', emoji: '🪻🌼', usage: 'sal', banner: false },
-  { type: 'Sal', name: 'Noturno', desc: 'Erva-Doce & Camomila', emoji: '🌱🌼', usage: 'sal', banner: true, bannerColor: '#3c2814', bannerFontColor: '#f5edd8' },
+  { type: 'Sal', name: 'Noturno', desc: 'Erva-Doce & Camomila', emoji: '🌱🌼', usage: 'sal', banner: true, bannerColor: '#3c2814', colorNome: '#f5edd8', colorDesc: '#f5edd8', colorDatas: '#f5edd8' },
   { type: 'Sal', name: 'Refrescante', desc: 'Hortela & Eucalipto', emoji: '🍃🌿', usage: 'sal', banner: false },
   { type: 'Jelly', name: 'Calmante', desc: 'Lavanda', emoji: '🪻', usage: 'jelly', banner: false }
 ];
