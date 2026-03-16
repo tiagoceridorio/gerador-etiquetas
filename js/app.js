@@ -31,6 +31,17 @@ function bindFormEvents() {
       document.getElementById(id).addEventListener('change', renderDraftPreview);
     });
 
+  document.getElementById('fabricDate').addEventListener('change', function() {
+    var val = this.value;
+    if (val) {
+      var parts = val.split('-');
+      var fab = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      var valid = new Date(fab);
+      valid.setFullYear(valid.getFullYear() + 1);
+      document.getElementById('validDate').value = dateToInput(valid);
+    }
+  });
+
   document.getElementById('productType').addEventListener('change', function() {
     if (this.value !== 'Outro') {
       document.getElementById('usageText').value = defaultUsageForType(this.value);
