@@ -825,13 +825,14 @@
       justify-content: center;
       z-index: 2;
       padding: 36px 10px 10px;
+      gap: 0;
     }
 
     .card-back .uso-title {
       font-family: 'Breathing', cursive;
       font-size: 22px;
       color: #1a1408;
-      margin-bottom: 2px;
+      margin-bottom: 0;
       text-align: center;
     }
 
@@ -1460,13 +1461,14 @@
 
       function apply() {
         title.style.fontSize = titleSize + 'px';
+        title.style.marginBottom = '0px';
         text.style.fontSize = textSize + 'px';
         text.style.lineHeight = '1.4';
       }
 
       function totalH() {
         apply();
-        return title.offsetHeight + 2 + text.offsetHeight;
+        return title.offsetHeight + text.offsetHeight;
       }
 
       // Shrink until content fits
